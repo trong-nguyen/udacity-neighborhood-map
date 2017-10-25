@@ -1,2 +1,2 @@
-# udacity-neighborhood-map
-A single page web app allows to show interesting places around a neighborhood of choice
+# Neighborhood Explorer
+A single page web app features interesting places around a neighborhood of choice
