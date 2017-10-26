@@ -35,23 +35,49 @@ app.ViewModel = function (argument) {
     self = this;
     this.places = ko.observableArray();
     this.placesData = {};
+    this.searchForm = new app.vm.Search();
 
-    getPlaces()
-        .then(function (results) {
-            results.forEach(function (data) {
-                self.places.push(new app.models.Place(data));
-            });
+    this.fetchData = function () {
+        return new Promise(function (resolve, reject) {
+            getPlaces()
+                .then(function (results) {
+                    results.forEach(function (data) {
+                        self.places.push(new app.vm.Place(data));
+                    });
 
-            self.placesData = results;
-        })
-        .catch(function (why) {
-            console.log('cannot get places', why);
+                    self.placesData = results;
+
+                    resolve();
+                })
+                .catch(function (why) {
+                    console.log('cannot get places', why);
+                    reject();
+                });
         });
+    }
+
+    function doFiltering (text) {
+        self.places().forEach(function (place) {
+            if (text === "" || place.name().toLowerCase().includes(text.toLowerCase())) {
+                place.visible(true);
+            } else {
+                place.visible(false);
+            }
+        });
+    }
+
+    this.searchForm.text.subscribe(doFiltering);
 };
 
 function main () {
     var viewModel = new app.ViewModel();
-    GX.vm = viewModel;
+
+    viewModel.fetchData()
+        .then(function () {
+            GX.vm = viewModel;
+
+            ko.applyBindings(viewModel);
+        });
 }
 
 var GX = {};
