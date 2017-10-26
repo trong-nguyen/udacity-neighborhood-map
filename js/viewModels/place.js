@@ -10,9 +10,10 @@ var app = app || {};
 
 (function () {
     app.viewModels.Place = function (data) {
-        this.name = ko.observable(data.name);
-        this.icon = ko.observable(data.icon);
-        this.placeID = ko.observable(data.id);
+        this.name = data.name;
+        this.icon = data.icon;
+        this.placeID = data.id;
+        this.location = data.geometry.location;
         this.visible = ko.observable(true);
     };
 })();

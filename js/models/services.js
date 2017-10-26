@@ -8,26 +8,29 @@ var app = app || {};
     app.models = app.models || {};
 
 (function (google) {
+    // This is Chicago
+    var location = new google.maps.LatLng(41.8748819,-87.6514046);
+
+    var map = new google.maps.Map(document.getElementById('google-map'), {
+        center: location,
+        zoom: 13
+    });
+
     function getPlaces(interest) {
-        var chicago = new google.maps.LatLng(41.8333925,-88.0121478);
-
-        var map = new google.maps.Map(document.getElementById('google-map'), {
-            center: chicago,
-            zoom: 15
-        });
-
         // search for places by these parameters
         var request = {
-            location: chicago,
+            location: location,
             radius: 500,
             types: ['food'],
-            name: 'italian restaurant'
-        }
+            keyword: interest,
+            query: interest
+        };
 
         var service = new google.maps.places.PlacesService(map);
 
         return new Promise (function (resolve, reject) {
-            service.nearbySearch(request, function (results, status) {
+            // service.nearbySearch(request, function (results, status) {
+            service.textSearch(request, function (results, status) {
                 if (status === google.maps.places.PlacesServiceStatus.OK) {
                     resolve(results);
                 } else {
@@ -39,14 +42,21 @@ var app = app || {};
 
     app.models.fetchData = function () {
         return new Promise(function (resolve, reject) {
-            getPlaces()
-                .then(function (results) {
-                    resolve(results);
-                })
+            getPlaces('seafood')
+                .then(resolve)
                 .catch(function (why) {
                     console.log('cannot get places', why);
                     reject();
                 });
         });
-    }
+    };
+
+    app.models.getLocation = function () {
+        return location;
+    };
+
+    app.models.getMap = function () {
+        return map;
+    };
+
 })(google);

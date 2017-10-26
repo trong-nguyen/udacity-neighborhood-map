@@ -4,14 +4,15 @@ var app = app || {};
 
 app.MainViewModel = function (argument) {
     self = this;
-    this.places = ko.observableArray();
-    this.placesData = {};
+    this.places = [];
+    this.placesData = {}; // for development
     this.searchForm = new app.viewModels.Search();
+    this.map = new app.viewModels.Map(app.models);
 
 
     function doFiltering (text) {
-        self.places().forEach(function (place) {
-            if (text === "" || place.name().toLowerCase().includes(text.toLowerCase())) {
+        self.places.forEach(function (place) {
+            if (text === "" || place.name.toLowerCase().includes(text.toLowerCase())) {
                 place.visible(true);
             } else {
                 place.visible(false);
@@ -28,6 +29,15 @@ app.MainViewModel = function (argument) {
         placesArray.forEach(function (placeData) {
             self.places.push(new app.viewModels.Place(placeData));
         });
+
+        // wire the visibility of the place on the list
+        // to that of the marker on the map
+        var markers = self.map.addMarkers(self.places);
+        self.places.forEach(function (place, i) {
+            place.visible.subscribe(function (isVisible) {
+                markers[i].setMap(isVisible ? self.map.map : null);
+            });
+        });
     };
 };
 
@@ -37,7 +47,7 @@ function main () {
     app.models.fetchData()
         .then(function (results) {
             viewModel.init(results);
-            GX.vm = viewModel;
+            GX.app = viewModel;
             ko.applyBindings(viewModel);
         });
 }
