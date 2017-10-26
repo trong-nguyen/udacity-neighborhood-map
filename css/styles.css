@@ -1,0 +1,25 @@
+.app {
+    display: flex;
+    margin: auto;
+    color: gray;
+    justify-content: flex-start;
+}
+
+#col-map {
+    flex-grow: 1;
+}
+
+#col-text {
+}
+
+#section-search {
+
+}
+
+#section-places {
+
+}
+
+#section-map {
+
+}

@@ -16,34 +16,43 @@
   <body>
     <h1>Neighborhood Explorer</h1>
 
-    <section id="search-container" data-bind="with: searchForm">
-        <form>
-            <label>
-                <input
-                    type="text"
-                    name="search-area"
-                    value=""
-                    placeholder="search within..."
-                    data-bind="textInput: text"
-                    >
-                <button type="submit">Filter</button>
-            </label>
-        </form>
-    </section>
+    <div class="app">
+        <div id="col-text">
+            <section id="section-search" data-bind="with: searchForm">
+                <form>
+                    <label>
+                        <input
+                            type="text"
+                            name="search-area"
+                            value=""
+                            placeholder="search within..."
+                            data-bind="textInput: text"
+                            >
+                        <button type="submit">Filter</button>
+                    </label>
+                </form>
+            </section>
 
-    <section id="neighborhood-places">
-        <ul data-bind="foreach: places">
-            <li>
-                <div class="place" data-bind="text: name, visible: visible">
-                </div>
-            </li>
-        </ul>
-    </section>
-
-    <section>
-        <div id="google-map">
+            <section id="section-places">
+                <ul data-bind="foreach: places">
+                    <li data-bind="visible: visible">
+                        <div class="place" data-bind="text: name">
+                        </div>
+                    </li>
+                </ul>
+            </section>
         </div>
-    </section>
+
+        <div id="col-map">
+            <section id="section-map">
+                <div id="google-map">
+                </div>
+            </section>
+        </div>
+    </div>
+
+
+
 
     <!-- jQuery first, then its dependency Popper.js, then Bootstrap JS -->
     <!-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script> -->
@@ -59,6 +68,7 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.2/knockout-min.js"></script>
 
     <!-- Main app -->
+    <script type="text/javascript" src="js/models/retrieve.js"></script>
     <script type="text/javascript" src="js/viewModels/place.js"></script>
     <script type="text/javascript" src="js/viewModels/search.js"></script>
     <script type="text/javascript" src="js/app.js"></script>

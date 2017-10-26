@@ -1,10 +1,14 @@
 'use strict';
 
+/*
+The viewModel for Search bar, storing the filtering text
+*/
+
 var app = app || {};
-    app.vm = app.vm || {};
+    app.viewModels = app.viewModels || {};
 
 (function () {
-    app.vm.Search = function () {
+    app.viewModels.Search = function () {
         this.text = ko.observable('');
     };
 })();

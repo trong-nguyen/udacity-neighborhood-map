@@ -1,13 +1,18 @@
 'use strict';
 
+/*
+The viewModel for place items, storing transformed properties
+and methods of each place of interest.
+*/
+
 var app = app || {};
-    app.vm = app.vm || {};
+    app.viewModels = app.viewModels || {};
 
 (function () {
-    app.vm.Place = function (data) {
+    app.viewModels.Place = function (data) {
         this.name = ko.observable(data.name);
         this.icon = ko.observable(data.icon);
-        this.place_id = ko.observable(data.id);
+        this.placeID = ko.observable(data.id);
         this.visible = ko.observable(true);
     };
 })();

@@ -2,59 +2,12 @@
 
 var app = app || {};
 
-function getPlaces(interest) {
-    var chicago = new google.maps.LatLng(41.8333925,-88.0121478);
-
-    var map = new google.maps.Map(document.getElementById('google-map'), {
-        center: chicago,
-        zoom: 15
-    });
-
-    // search for places by these parameters
-    var request = {
-        location: chicago,
-        radius: 500,
-        types: ['food'],
-        name: 'italian restaurant'
-    }
-
-    var service = new google.maps.places.PlacesService(map);
-
-    return new Promise (function (resolve, reject) {
-        service.nearbySearch(request, function (results, status) {
-            if (status === google.maps.places.PlacesServiceStatus.OK) {
-                resolve(results);
-            } else {
-                reject(status);
-            }
-        });
-    });
-}
-
-app.ViewModel = function (argument) {
+app.MainViewModel = function (argument) {
     self = this;
     this.places = ko.observableArray();
     this.placesData = {};
-    this.searchForm = new app.vm.Search();
+    this.searchForm = new app.viewModels.Search();
 
-    this.fetchData = function () {
-        return new Promise(function (resolve, reject) {
-            getPlaces()
-                .then(function (results) {
-                    results.forEach(function (data) {
-                        self.places.push(new app.vm.Place(data));
-                    });
-
-                    self.placesData = results;
-
-                    resolve();
-                })
-                .catch(function (why) {
-                    console.log('cannot get places', why);
-                    reject();
-                });
-        });
-    }
 
     function doFiltering (text) {
         self.places().forEach(function (place) {
@@ -67,15 +20,24 @@ app.ViewModel = function (argument) {
     }
 
     this.searchForm.text.subscribe(doFiltering);
+
+    this.init = function (placesArray) {
+        // the raw returned array
+        self.placesData = placesArray;
+
+        placesArray.forEach(function (placeData) {
+            self.places.push(new app.viewModels.Place(placeData));
+        });
+    };
 };
 
 function main () {
-    var viewModel = new app.ViewModel();
+    var viewModel = new app.MainViewModel();
 
-    viewModel.fetchData()
-        .then(function () {
+    app.models.fetchData()
+        .then(function (results) {
+            viewModel.init(results);
             GX.vm = viewModel;
-
             ko.applyBindings(viewModel);
         });
 }
