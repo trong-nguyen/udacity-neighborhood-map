@@ -2,6 +2,8 @@
 
 /*
 The viewModel for Google Maps
+Handle all the Google Maps API internally
+Only expose app-related methods
 */
 
 var app = app || {};
@@ -10,15 +12,18 @@ var app = app || {};
 (function (google, services, utils) {
 
     app.viewModels.Map = function () {
+        var self = this;
+
         this.map = services.getMap();
         this.markers = [];
         this.infoHolder = new google.maps.InfoWindow();
+        this.infoTemplate = utils.templates['info-window'];
 
 
-        this.addMarkers = (function (places) {
-            var currentMap = this.map; // get a hold of the map
+        this.addMarkers = function (places) {
+            var currentMap = self.map; // get a hold of the map
 
-            this.markers = places.map(function (place) {
+            self.markers = places.map(function (place) {
                 var marker = new google.maps.Marker({
                     position: place.location,
                     map: currentMap,
@@ -32,20 +37,19 @@ var app = app || {};
                 return marker;
             });
 
-            return this.markers;
-        }).bind(this);
+            return self.markers;
+        };
 
         var populateInfoWindow = (function (map, place, marker) {
             // reuse the infoHolder for every infoWindow
             var info = this.infoHolder;
+            var compile = this.infoTemplate;
             if (info.marker != marker) {
                 info.marker = marker;
                 info.open(map, marker);
 
                 // asynchronously load content into window
-                utils.compileTemplate('info-window', place, function (content) {
-                    info.setContent(content);
-                });
+                info.setContent(compile(place));
 
                 info.addListener('closeclick', function () {
                     info.marker = null;

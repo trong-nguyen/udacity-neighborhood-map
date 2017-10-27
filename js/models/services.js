@@ -43,10 +43,11 @@ var app = app || {};
     app.models.fetchData = function () {
         return new Promise(function (resolve, reject) {
             getPlaces('seafood')
-                .then(resolve)
-                .catch(function (why) {
-                    console.log('cannot get places', why);
-                    reject();
+                .then(function (results) {
+                    app.models.getData = function () {
+                        return results;
+                    };
+                    resolve(results);
                 });
         });
     };
