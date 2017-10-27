@@ -7,7 +7,7 @@ app.MainViewModel = function (argument) {
     this.places = [];
     this.placesData = {}; // for development
     this.searchForm = new app.viewModels.Search();
-    this.map = new app.viewModels.Map(app.models);
+    this.map = new app.viewModels.Map();
 
 
     function doFiltering (text) {
@@ -23,7 +23,6 @@ app.MainViewModel = function (argument) {
     this.searchForm.text.subscribe(doFiltering);
 
     this.init = function (placesArray) {
-        // the raw returned array
         self.placesData = placesArray;
 
         placesArray.forEach(function (placeData) {
