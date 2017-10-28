@@ -3,12 +3,15 @@
 var app = app || {};
 
 app.MainViewModel = function (data) {
-    self = this;
+    var self = this;
+
     this.places = data.map(function (placeData) {
         return new app.viewModels.Place(placeData);
     });
     this.searchForm = new app.viewModels.Search();
     this.map = new app.viewModels.Map();
+    this.activePlace = ko.observable(null);
+
 
 
     function doFiltering (text) {
@@ -21,17 +24,36 @@ app.MainViewModel = function (data) {
         });
     }
 
-    this.searchForm.text.subscribe(doFiltering);
-
     this.wireViews = function () {
+        /*
+        Wire PlaceListView to GooglMapView in terms of:
+            - filtered places
+            - current active place
+        */
+
         // wire the visibility of the place on the list
         // to that of the marker on the map
         var markers = self.map.addMarkers(self.places);
         self.places.forEach(function (place, i) {
+            place.marker = markers[i];
             place.visible.subscribe(function (isVisible) {
                 markers[i].setMap(isVisible ? self.map.map : null);
             });
         });
+
+        // wire Places to changes on SearchForm' filtering text
+        self.searchForm.text.subscribe(doFiltering);
+
+        // wire activePlace to Map's current info window
+        self.activePlace.subscribe(function () {
+            self.map.showInfoWindow(self.activePlace());
+        });
+    };
+
+    this.setActivePlace = function (place, event) {
+        if (self.activePlace() != place) {
+            self.activePlace(place);
+        }
     };
 };
 

@@ -17,5 +17,6 @@ var app = app || {};
         this.address = data.formatted_address;
         // this.photo = data.photos.length ? data.photos[0].getUrl() : '';
         this.visible = ko.observable(true);
+        this.marker = null;
     };
 })();

@@ -8,6 +8,8 @@ var app = app || {};
     app.models = app.models || {};
 
 (function (google) {
+    var module = app.models;
+
     // This is Chicago
     var location = new google.maps.LatLng(41.8748819,-87.6514046);
 
@@ -40,11 +42,11 @@ var app = app || {};
         });
     }
 
-    app.models.fetchData = function () {
+    module.fetchData = function () {
         return new Promise(function (resolve, reject) {
             getPlaces('seafood')
                 .then(function (results) {
-                    app.models.getData = function () {
+                    module.getData = function () {
                         return results;
                     };
                     resolve(results);
@@ -52,11 +54,11 @@ var app = app || {};
         });
     };
 
-    app.models.getLocation = function () {
+    module.getLocation = function () {
         return location;
     };
 
-    app.models.getMap = function () {
+    module.getMap = function () {
         return map;
     };
 

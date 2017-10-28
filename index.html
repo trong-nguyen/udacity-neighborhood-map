@@ -36,7 +36,9 @@
             <section id="section-places">
                 <ul data-bind="foreach: places">
                     <li data-bind="visible: visible">
-                        <div class="place" data-bind="text: name">
+                        <div
+                        class="place"
+                        data-bind="text: name, click: $parent.setActivePlace">
                         </div>
                     </li>
                 </ul>

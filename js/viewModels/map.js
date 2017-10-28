@@ -10,15 +10,15 @@ var app = app || {};
     app.viewModels = app.viewModels || {};
 
 (function (google, services, utils) {
+    var module = app.viewModels;
 
-    app.viewModels.Map = function () {
+    module.Map = function () {
         var self = this;
 
         this.map = services.getMap();
         this.markers = [];
         this.infoHolder = new google.maps.InfoWindow();
         this.infoTemplate = utils.templates['info-window'];
-
 
         this.addMarkers = function (places) {
             var currentMap = self.map; // get a hold of the map
@@ -40,11 +40,11 @@ var app = app || {};
             return self.markers;
         };
 
-        var populateInfoWindow = (function (map, place, marker) {
+        function populateInfoWindow (map, place, marker) {
             // reuse the infoHolder for every infoWindow
-            var info = this.infoHolder;
-            var compile = this.infoTemplate;
-            if (info.marker != marker) {
+            var info = self.infoHolder;
+            var compile = self.infoTemplate;
+            if (info.marker !== marker) {
                 info.marker = marker;
                 info.open(map, marker);
 
@@ -55,6 +55,12 @@ var app = app || {};
                     info.marker = null;
                 });
             }
-        }).bind(this);
+        }
+
+        this.showInfoWindow = function (place) {
+            if (place.marker) {
+                populateInfoWindow(self.map, place, place.marker);
+            }
+        };
     };
 })(google, app.models, app.utils);
