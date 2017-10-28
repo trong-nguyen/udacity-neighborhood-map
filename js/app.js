@@ -20,6 +20,10 @@ app.MainViewModel = function (data) {
                 place.visible(true);
             } else {
                 place.visible(false);
+
+                if (place === self.activePlace()) {
+                    self.activePlace(null);
+                }
             }
         });
     }
@@ -33,11 +37,11 @@ app.MainViewModel = function (data) {
 
         // wire the visibility of the place on the list
         // to that of the marker on the map
-        var markers = self.map.addMarkers(self.places);
+        var markers = self.map.createMarkers(self.places);
         self.places.forEach(function (place, i) {
             place.marker = markers[i];
             place.visible.subscribe(function (isVisible) {
-                markers[i].setMap(isVisible ? self.map.map : null);
+                markers[i].setMap(isVisible ? self.map.getMap() : null);
             });
         });
 
@@ -45,13 +49,17 @@ app.MainViewModel = function (data) {
         self.searchForm.text.subscribe(doFiltering);
 
         // wire activePlace to Map's current info window
-        self.activePlace.subscribe(function () {
-            self.map.showInfoWindow(self.activePlace());
+        self.activePlace.subscribe(function (place) {
+            if (place !== null) {
+                self.map.showInfoWindow(place);
+            } else {
+                self.map.hideInfoWindow();
+            }
         });
     };
 
     this.setActivePlace = function (place, event) {
-        if (self.activePlace() != place) {
+        if (self.activePlace() !== place) {
             self.activePlace(place);
         }
     };
@@ -70,6 +78,14 @@ function main () {
         viewModel.wireViews();
         GX.app = viewModel;
         ko.applyBindings(viewModel);
+    });
+
+    // prevent form submission - enter key code is 13
+    $('#search-field').keypress(function (event) {
+        if (event.keyCode === 13) {
+            event.preventDefault();
+            return false;
+        }
     });
 }
 

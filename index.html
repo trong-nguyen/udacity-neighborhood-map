@@ -19,7 +19,7 @@
     <div class="app">
         <div id="col-text">
             <section id="section-search" data-bind="with: searchForm">
-                <form>
+                <form autocomplete="off">
                     <label>
                         <input
                             type="text"
@@ -27,8 +27,9 @@
                             value=""
                             placeholder="search within..."
                             data-bind="textInput: text"
+                            id="search-field"
                             >
-                        <button type="submit">Filter</button>
+                        <button type="button">Filter</button>
                     </label>
                 </form>
             </section>
