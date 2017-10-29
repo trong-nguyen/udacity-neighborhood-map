@@ -11,3 +11,8 @@ node server.js
 
 ## Todos:
 Close the infoWindow when filtering is applied
+
+## Attributions
+Third party APIs use:
+- [Google Map JavaScript API](https://developers.google.com/maps/documentation/javascript)
+- [Google Place API](https://developers.google.com/places/javascript)

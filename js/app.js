@@ -12,6 +12,10 @@ app.MainViewModel = function (data) {
     this.map = new app.viewModels.Map();
     this.activePlace = ko.observable(null);
 
+    var effects = {
+        markers: []
+    };
+
 
 
     function doFiltering (text) {
@@ -30,9 +34,10 @@ app.MainViewModel = function (data) {
 
     this.wireViews = function () {
         /*
-        Wire PlaceListView to GooglMapView in terms of:
-            - filtered places
-            - current active place
+        * @description: wire PlaceListView to GooglMapView in terms of
+        * filtered places and current active place
+        * @constructor
+        * @param none
         */
 
         // wire the visibility of the place on the list
@@ -52,10 +57,14 @@ app.MainViewModel = function (data) {
         self.activePlace.subscribe(function (place) {
             if (place !== null) {
                 self.map.showInfoWindow(place);
+                app.viewModels.animateMarker(place.marker);
             } else {
                 self.map.hideInfoWindow();
             }
         });
+
+
+        effects.markers = markers;
     };
 
     this.setActivePlace = function (place, event) {

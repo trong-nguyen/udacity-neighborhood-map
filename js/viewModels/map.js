@@ -49,6 +49,13 @@ var app = app || {};
         }
     };
 
+    module.animateMarker = function (marker) {
+        marker.setAnimation(google.maps.Animation.BOUNCE);
+        setTimeout(function () {
+            marker.setAnimation(null);
+        }, 700);
+    }
+
     module.Map = function () {
         /*
             A map that wraps google.maps.Map
@@ -68,6 +75,7 @@ var app = app || {};
 
                 marker.addListener('click', function () {
                     infoWindow.open(googleMap, place, marker);
+                    module.animateMarker(marker);
                 });
 
                 return marker;
