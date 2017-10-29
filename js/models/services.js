@@ -7,7 +7,7 @@ A collection of methods to retrieve model data
 var app = app || {};
     app.models = app.models || {};
 
-(function (google) {
+(function (google, $) {
     var module = app.models;
 
     // This is Chicago
@@ -62,4 +62,26 @@ var app = app || {};
         return map;
     };
 
-})(google);
+    module.getFoursquare = function (latlng) {
+        if (!app.tauth || !app.tauth.foursquare) {
+            return {};
+        }
+        var fs = app.tauth.foursquare;
+        var id = fs.client_id;
+        var secret = fs.client_secret;
+
+        var url = "https://api.foursquare.com/v2/venues/search?";
+
+        var params = $.param({
+            ll: String(latlng.lat) + "," + String(latlng.lng),
+            client_id: id,
+            client_secret: secret,
+            v: "20170801"
+        });
+
+        return new Promise (function (resolve, reject) {
+            $.getJSON(url + params, resolve);
+        });
+    };
+
+})(google, $);
