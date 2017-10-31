@@ -84,14 +84,18 @@ var app = app || {};
     };
 
     module.getTweets = function (q, latlng) {
-        var url = "https://8y55ch1t90.execute-api.us-east-2.amazonaws.com/prod";
+        var url = "https://api.trongn.com/twitter";
         var params = $.param({
             q       : q,
             geocode : [String(latlng.lat), String(latlng.lng), '5mi'].join(',')
         });
 
+        // geocode=41.874882,-87.642227,5mi
         return new Promise (function (resolve, reject) {
-            $.getJSON(url + '?' + params, resolve);
+            $.getJSON(url + '?' + params, function (results) {
+                var tweets = results.statuses;
+                resolve(tweets);
+            });
         });
     };
 
