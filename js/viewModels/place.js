@@ -20,7 +20,7 @@ var app = app || {};
         this.placeID = data.place_id;
         this.location = data.geometry.location;
         this.address = data.formatted_address;
-        this.photo = data.photos.length ? data.photos[0].getUrl(placePhotoConfigs) : '';
+        this.photo = (data.photos && data.photos.length) ? data.photos[0].getUrl(placePhotoConfigs) : '';
         this.visible = ko.observable(true);
         this.marker = null;
     };

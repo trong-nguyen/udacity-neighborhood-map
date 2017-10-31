@@ -63,24 +63,35 @@ var app = app || {};
     };
 
     module.getFoursquare = function (latlng) {
+        // if no credentials setup, return empty results
         if (!app.tauth || !app.tauth.foursquare) {
             return {};
         }
-        var fs = app.tauth.foursquare;
-        var id = fs.client_id;
-        var secret = fs.client_secret;
 
+        var auth = app.tauth.foursquare;
         var url = "https://api.foursquare.com/v2/venues/search?";
 
         var params = $.param({
-            ll: String(latlng.lat) + "," + String(latlng.lng),
-            client_id: id,
-            client_secret: secret,
-            v: "20170801"
+            ll            : String(latlng.lat) + "," + String(latlng.lng),
+            client_id     : auth.client_id,
+            client_secret : auth.client_secret,
+            v             : auth.api_version
         });
 
         return new Promise (function (resolve, reject) {
             $.getJSON(url + params, resolve);
+        });
+    };
+
+    module.getTweets = function (q, latlng) {
+        var url = "https://8y55ch1t90.execute-api.us-east-2.amazonaws.com/prod";
+        var params = $.param({
+            q       : q,
+            geocode : [String(latlng.lat), String(latlng.lng), '5mi'].join(',')
+        });
+
+        return new Promise (function (resolve, reject) {
+            $.getJSON(url + '?' + params, resolve);
         });
     };
 
