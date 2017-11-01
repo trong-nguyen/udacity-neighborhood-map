@@ -63,28 +63,23 @@ var app = app || {};
     };
 
     module.getFoursquare = function (latlng) {
-        // if no credentials setup, return empty results
-        if (!app.tauth || !app.tauth.foursquare) {
-            return {};
-        }
-
-        var auth = app.tauth.foursquare;
-        var url = "https://api.foursquare.com/v2/venues/search?";
+        var url = "https://api.trongn.com/public/foursquare";
+        var version = '20170801';
 
         var params = $.param({
-            ll            : String(latlng.lat) + "," + String(latlng.lng),
-            client_id     : auth.client_id,
-            client_secret : auth.client_secret,
-            v             : auth.api_version
+            ll : String(latlng.lat) + "," + String(latlng.lng),
+            v  : version
         });
 
         return new Promise (function (resolve, reject) {
-            $.getJSON(url + params, resolve);
+            $.getJSON(url + '?' + params, function (results) {
+                resolve(results.response.venues);
+            });
         });
     };
 
     module.getTweets = function (q, latlng) {
-        var url = "https://api.trongn.com/twitter";
+        var url = "https://api.trongn.com/public/twitter";
         var params = $.param({
             q       : q,
             geocode : [String(latlng.lat), String(latlng.lng), '5mi'].join(',')
