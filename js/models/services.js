@@ -94,4 +94,21 @@ var app = app || {};
         });
     };
 
+    module.getYelp = function (q, latlng) {
+        var url = "https://api.trongn.com/public/yelp";
+        var params = $.param({
+            term      : q,
+            latitude  : latlng.lat,
+            longitude : latlng.lng
+        });
+
+        return new Promise (function (resolve, reject) {
+            $.getJSON(url + '?' + params, function (results) {
+                var businesses = results.businesses;
+                resolve(businesses);
+            });
+        });
+    };
+
+
 })(google, $);
