@@ -62,13 +62,14 @@ var app = app || {};
         return map;
     };
 
-    module.getFoursquare = function (latlng) {
+    module.getFoursquare = function (q, latlng) {
         var url = "https://api.trongn.com/public/foursquare";
         var version = '20170801';
 
         var params = $.param({
-            ll : String(latlng.lat) + "," + String(latlng.lng),
-            v  : version
+            query : q,
+            ll    : String(latlng.lat) + "," + String(latlng.lng),
+            v     : version
         });
 
         return new Promise (function (resolve, reject) {

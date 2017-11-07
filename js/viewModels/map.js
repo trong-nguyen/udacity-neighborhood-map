@@ -19,17 +19,51 @@ var app = app || {};
         */
 
         var _marker = null,
-            infoWindow = new google.maps.InfoWindow(),
+            infoWindow = new google.maps.InfoWindow({
+                content: '',
+                // disableAutoPan: true
+            }),
             template = utils.templates['info-window'];
+
+        function loadContent(place) {
+            var content = Object.assign({}, place); // copy
+
+            var latlng = {
+                lat: place.location.lat(),
+                lng: place.location.lng()
+            };
+
+            return new Promise (function (resolve, reject) {
+                Promise.all([
+                        services.getYelp(place.name, latlng),
+                        services.getFoursquare(place.name, latlng),
+                        services.getTweets(place.name, latlng),
+                    ])
+                    .then(function (resultsArray) {
+                        // get results from array
+                        content.yelp       = resultsArray[0].length ? resultsArray[0][0] : {};
+                        content.foursquare = resultsArray[1].length ? resultsArray[1][0] : {};
+                        content.tweets     = resultsArray[2];
+                        console.info(content);
+                        resolve(content);
+                    });
+            });
+        }
 
         return {
             open: function (map, place, marker) {
                 if (marker !== null && _marker !== marker) {
+                    infoWindow.setContent('');
+
                     _marker = marker;
                     infoWindow.open(map, marker);
 
                     // asynchronously load content into window
-                    infoWindow.setContent(template(place));
+                    loadContent(place).then(function (content) {
+                        var html = template(content);
+                        infoWindow.setContent(html);
+                        GX.test = infoWindow;
+                    });
 
                     infoWindow.addListener('closeclick', function () {
                         _marker = null;

@@ -7,13 +7,14 @@ A collection of utility methods, template loading, etc.
 var app = app || {};
     app.utils = app.utils || {};
 
-(function (_) {
-    app.utils.loadTemplate = function (file) {
+(function (module, _) {
+
+    module.loadTemplate = function (file) {
         return new Promise (function (resolve, reject) {
             $.get('templates/' + file + '.html')
                 .done(function (template) {
                     // create an Underscore templating engine
-                    resolve(_.template(template))
+                    resolve(_.template(template));
                 })
                 .fail(function (why) {
                     console.error('Cannot get template', file);
@@ -23,28 +24,28 @@ var app = app || {};
         });
     };
 
-    app.utils.loadTemplateCollection = function () {
+    module.loadTemplateCollection = function () {
         // load all templates asynchronously for app rendering
         var templates = ['info-window'];
-        var loaded = Promise.all(templates.map(app.utils.loadTemplate));
+        var loaded = Promise.all(templates.map(module.loadTemplate));
 
         return new Promise (function (resolve, reject) {
             loaded.then(function (compiledTemplates) {
-                app.utils.templates = {};
+                module.templates = {};
                 templates.forEach(function (name, i) {
-                    app.utils.templates[name] = compiledTemplates[i];
+                    module.templates[name] = compiledTemplates[i];
                 });
                 resolve();
             });
         });
     };
 
-    app.utils.init = function () {
+    module.init = function () {
         return new Promise (function (resolve, reject) {
             Promise.all([
                 // insert all async loading here
-                app.utils.loadTemplateCollection()
+                module.loadTemplateCollection()
                 ]).then(resolve);
         });
     };
-})(_);
+})(app.utils, _);
