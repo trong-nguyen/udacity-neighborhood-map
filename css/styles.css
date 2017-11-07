@@ -28,3 +28,25 @@
 #section-map {
 
 }
+
+.info-window {
+    max-height: 300px;
+    max-width: 400px;
+}
+
+.info-window-icon {
+    width: 25px;
+    height: 25px;
+}
+
+.info-window-photo {
+    width: 250px;
+}
+
+.twitter-user-icon {
+    height: 25px;
+}
+
+.center {
+    text-align: center;
+}

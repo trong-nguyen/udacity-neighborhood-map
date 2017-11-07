@@ -1,34 +1,52 @@
+<div class="info-window">
+
 <section id="googlemap-section">
-    <h2><%= name %></h2>
+    <h3><%= name %></h3>
     <address><%= address %></address>
-    <div>
+    <div><%= description %></div>
+    <div class="info-window-photo">
         <img src="<%= photo %>" alt="Photo">
     </div>
 </section>
 
-<hr>
-
 <section id="yelp-section">
-    <a href="<%= yelp.url %>">Yelp rating:</a> <%= yelp.rating %> (<%= yelp.review_count %> reviews)
+    <span>
+        <a href="<%= yelp.url %>" target="blank">
+            <img src="http://valleygoldmine.com/template/VGM/images/icon-yelp.png" alt="Yelp Icon" class="info-window-icon">
+        </a>
+    </span>
+    Rating: <%= yelp.rating %> (<%= yelp.review_count %> reviews)
 </section>
-
-<hr>
 
 <section id="foursquare-section">
     <div class="foursquare-stats">
-        Foursquare checkins (<%= foursquare.stats.checkinsCount %>), users (<%= foursquare.stats.usersCount %>), tips (<%= foursquare.stats.tipCount %>)
+        <span>
+            <a href="<%= foursquare.url %>" target="blank">
+                <img src="http://icons.iconarchive.com/icons/tinylab/android-lollipop-apps/128/Foursquare-icon.png" alt="Foursquare Icon" class="info-window-icon">
+            </a>
+        </span>
+        <% if (foursquare.stats) { %>
+          <%= foursquare.stats.checkinsCount %> checkins,  <%= foursquare.stats.usersCount %> users, <%= foursquare.stats.tipCount %> tips
+        <% } %>
     </div>
 </section>
 
 <hr>
 
 <section id="twitter-section">
-    <% tweets.forEach(function (tweet) { %>
-        <div class="tweet">
-            <a href="<%= tweet.user.url %>">
-                <img src="<%= tweet.user.profile_image_url %>" alt="twitter-user" class="twitter-user-icon">
-            </a>
-            <%= tweet.user.name %>: <%= tweet.text %></p>
+    <% if (tweets.length) { %>
+        <% tweets.forEach(function (tweet) { %>
+            <div class="tweet">
+                <a href="<%= tweet.user.url %>">
+                    <img src="<%= tweet.user.profile_image_url %>" alt="twitter-user" class="twitter-user-icon">
+                </a>
+                <%= tweet.user.name %>: <%= tweet.text %></p>
+            </div>
+        <% }); %>
+        <div class="center">
+            <img src="https://cdn1.iconfinder.com/data/icons/logotypes/32/twitter-128.png" alt="Twitter Icon" class="info-window-icon">
         </div>
-    <% }); %>
+    <% } %>
 </section>
+
+</div>

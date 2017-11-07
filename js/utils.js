@@ -48,4 +48,6 @@ var app = app || {};
                 ]).then(resolve);
         });
     };
+
+    module.uniq = _.uniq; //porting underscore unique
 })(app.utils, _);

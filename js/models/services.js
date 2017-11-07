@@ -69,7 +69,8 @@ var app = app || {};
         var params = $.param({
             query : q,
             ll    : String(latlng.lat) + "," + String(latlng.lng),
-            v     : version
+            v     : version,
+            limit : 1
         });
 
         return new Promise (function (resolve, reject) {
@@ -83,10 +84,10 @@ var app = app || {};
         var url = "https://api.trongn.com/public/twitter";
         var params = $.param({
             q       : q,
-            geocode : [String(latlng.lat), String(latlng.lng), '5mi'].join(',')
+            geocode : [String(latlng.lat), String(latlng.lng), '5mi'].join(','),
+            count   : 5,
         });
 
-        // geocode=41.874882,-87.642227,5mi
         return new Promise (function (resolve, reject) {
             $.getJSON(url + '?' + params, function (results) {
                 var tweets = results.statuses;
@@ -100,7 +101,8 @@ var app = app || {};
         var params = $.param({
             term      : q,
             latitude  : latlng.lat,
-            longitude : latlng.lng
+            longitude : latlng.lng,
+            limit     : 1,
         });
 
         return new Promise (function (resolve, reject) {

@@ -27,6 +27,7 @@ var app = app || {};
 
         function loadContent(place) {
             var content = Object.assign({}, place); // copy
+            content.description = [];
 
             var latlng = {
                 lat: place.location.lat(),
@@ -41,10 +42,44 @@ var app = app || {};
                     ])
                     .then(function (resultsArray) {
                         // get results from array
-                        content.yelp       = resultsArray[0].length ? resultsArray[0][0] : {};
-                        content.foursquare = resultsArray[1].length ? resultsArray[1][0] : {};
-                        content.tweets     = resultsArray[2];
+
+                        // Yelp
+                        content.yelp = {};
+                        var ypData = resultsArray[0];
+                        if (ypData.length) {
+                            var data = ypData[0];
+                            content.yelp = data;
+
+                            // set photo to Yelp's if not available
+                            content.photo = content.photo || data.image_url;
+
+                            var description = data.categories.map(function (c) {
+                                return c.alias;
+                            });
+                            content.description = content.description.concat(description);
+                        }
+
+                        // 4square
+                        content.foursquare = {};
+                        var fsData = resultsArray[1];
+                        if (fsData.length) {
+                            var data = fsData[0];
+                            content.foursquare = data;
+                            content.foursquare.url = 'https://foursquare.com/v/' + data.id;
+
+
+                            var description = data.categories.map(function (c) {
+                                return c.name.toLowerCase();
+                            });
+                            content.description = content.description.concat(description);
+                        }
+
+                        // Twitter
+                        content.tweets = resultsArray[2];
                         console.info(content);
+
+                        content.description = utils.uniq(content.description).join(', ');
+
                         resolve(content);
                     });
             });
