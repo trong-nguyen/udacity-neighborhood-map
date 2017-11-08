@@ -8,51 +8,66 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
-
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
     <!-- App's stylesheet -->
     <link rel="stylesheet" type="text/css" href="css/styles.css">
   </head>
   <body>
     <h1>Neighborhood Explorer</h1>
 
-    <div class="app">
-        <div id="col-text">
-            <section id="section-search" data-bind="with: searchForm">
-                <form autocomplete="off">
-                    <label>
-                        <input
-                            type="text"
-                            name="search-area"
-                            value=""
-                            placeholder="search within..."
-                            data-bind="textInput: text"
-                            id="search-field"
-                            >
-                        <button type="button">Filter</button>
-                    </label>
-                </form>
-            </section>
+    <div class="app fluid-container">
+        <div class="row">
+            <div class="col-12">
+                <!-- The button to toggle search field -->
+                <div class="navbar navbar-light">
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#search-area" aria-controls="search-area" aria-expanded="true" aria-label="Toggle Search">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                </div>
 
-            <section id="section-places">
-                <ul data-bind="foreach: places">
-                    <li data-bind="visible: visible">
-                        <div
-                        class="place"
-                        data-bind="text: name, click: $parent.setActivePlace">
+                <!-- The search field -->
+                <div class="collapse navbar-dark bg-dark" id="search-area">
+                    <section id="section-search" data-bind="with: searchForm" class="m-md-2 m-sm-1">
+                        <form autocomplete="off" class="form-inline">
+                            <label>
+                                <input
+                                    type="search"
+                                    name="search-area"
+                                    value=""
+                                    placeholder="Search within..."
+                                    data-bind="textInput: text"
+                                    id="search-field"
+                                    class="form-control mb-2 mr-sm-2 mb-sm-0"
+                                    aria-label="Search"
+                                    >
+                                <button
+                                    type="button"
+                                    class="btn btn-primary my-2 my-sm-0"
+                                    >Filter
+                                </button>
+                            </label>
+                        </form>
+                    </section>
+
+                    <section id="section-places" class="m-md-2 m-sm-1">
+                        <div data-bind="foreach: places">
+                            <div class="p-md-1"
+                                data-bind="text: name, click: $parent.setActivePlace, visible: visible">
+                            </div>
                         </div>
-                    </li>
-                </ul>
-            </section>
+                    </section>
+
+                </div>
+            </div>
         </div>
 
-        <div id="col-map">
-            <!-- <section id="section-map"> -->
-                <div id="google-map">
-                </div>
-            <!-- </section> -->
+        <div class="row">
         </div>
     </div>
+
+    <section id="section-map">
+        <div id="google-map" class="m-5"></div>
+    </section>
 
 
 
@@ -62,8 +77,8 @@
 
     <!-- use the full version of jQuery instead of the trimmed -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
 
     <!-- UnderscoreJS -->
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>

@@ -13,6 +13,9 @@ node server.js
 Close the infoWindow when filtering is applied
 
 ## Attributions
-Third party APIs use:
+Third party APIs used:
 - [Google Map JavaScript API](https://developers.google.com/maps/documentation/javascript)
 - [Google Place API](https://developers.google.com/places/javascript)
+- [Yelp API](https://www.yelp.com/developers)
+- [Foursquare API](https://developer.foursquare.com)
+- [Twitter API](https://developer.twitter.com/en.html)
