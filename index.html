@@ -16,58 +16,56 @@
     <h1>Neighborhood Explorer</h1>
 
     <div class="app fluid-container">
+        <div id="toggle-button">
+            <!-- The button to toggle search field -->
+            <div class="navbar navbar-light d-lg-none">
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#search-area" aria-controls="search-area" aria-expanded="true" aria-label="Toggle Search">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+            </div>
+        </div>
         <div class="row">
-            <div class="col-12">
-                <!-- The button to toggle search field -->
-                <div class="navbar navbar-light">
-                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#search-area" aria-controls="search-area" aria-expanded="true" aria-label="Toggle Search">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                </div>
+            <!-- The search field -->
+            <div class="col-sm-12 col-md-4 col-lg-3 collapse navbar-dark bg-dark show" id="search-area">
+                <section id="section-search" data-bind="with: searchForm" class="m-md-2 m-sm-1">
+                    <form autocomplete="off" class="">
+                        <label>
+                            <input
+                                type="search"
+                                name="search-area"
+                                value=""
+                                placeholder="Search within..."
+                                data-bind="textInput: text"
+                                id="search-field"
+                                class="form-control mb-2 mr-sm-2 mb-sm-0"
+                                aria-label="Search"
+                                >
+                            <button
+                                type="button"
+                                class="btn btn-primary my-2 my-sm-0"
+                                >Filter
+                            </button>
+                        </label>
+                    </form>
+                </section>
 
-                <!-- The search field -->
-                <div class="collapse navbar-dark bg-dark" id="search-area">
-                    <section id="section-search" data-bind="with: searchForm" class="m-md-2 m-sm-1">
-                        <form autocomplete="off" class="form-inline">
-                            <label>
-                                <input
-                                    type="search"
-                                    name="search-area"
-                                    value=""
-                                    placeholder="Search within..."
-                                    data-bind="textInput: text"
-                                    id="search-field"
-                                    class="form-control mb-2 mr-sm-2 mb-sm-0"
-                                    aria-label="Search"
-                                    >
-                                <button
-                                    type="button"
-                                    class="btn btn-primary my-2 my-sm-0"
-                                    >Filter
-                                </button>
-                            </label>
-                        </form>
-                    </section>
-
-                    <section id="section-places" class="m-md-2 m-sm-1">
-                        <div data-bind="foreach: places">
-                            <div class="p-md-1"
-                                data-bind="text: name, click: $parent.setActivePlace, visible: visible">
-                            </div>
+                <section id="section-places" class="m-md-2 m-sm-1">
+                    <div data-bind="foreach: places">
+                        <div class="p-md-1"
+                            data-bind="text: name, click: $parent.setActivePlace, visible: visible">
                         </div>
-                    </section>
+                    </div>
+                </section>
+            </div>
 
+            <div class="col-sm-12 col-md">
+                <div id="section-map" class="m-2">
+                    <div id="google-map"></div>
                 </div>
             </div>
         </div>
-
-        <div class="row">
-        </div>
     </div>
 
-    <section id="section-map">
-        <div id="google-map" class="m-5"></div>
-    </section>
 
 
 

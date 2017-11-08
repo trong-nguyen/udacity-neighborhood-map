@@ -160,5 +160,9 @@ var app = app || {};
         this.getMap = function () {
             return googleMap;
         };
+
+        this.redraw = function () {
+            google.maps.event.trigger(googleMap, 'resize');
+        };
     };
 })(google, app.models, app.utils);

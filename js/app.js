@@ -12,6 +12,7 @@ app.MainViewModel = function (data) {
     this.map = new app.viewModels.Map();
     this.activePlace = ko.observable(null);
 
+
     var effects = {
         markers: []
     };
@@ -63,6 +64,8 @@ app.MainViewModel = function (data) {
             }
         });
 
+        // wire menu visibility, which affects layout, to google map layout
+        $('#search-area').on('hidden.bs.collapse', self.map.redraw);
 
         effects.markers = markers;
     };
@@ -78,7 +81,7 @@ function main () {
 
     var loaded = Promise.all([
         app.utils.init(),
-        app.models.fetchData()
+        app.models.init(),
         ]);
 
     loaded.then(function (results) {

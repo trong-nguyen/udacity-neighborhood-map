@@ -13,7 +13,7 @@ var app = app || {};
     // This is Chicago
     var location = new google.maps.LatLng(41.8748819,-87.6514046);
 
-    var map = new google.maps.Map(document.getElementById('google-map'), {
+    var _map = new google.maps.Map(document.getElementById('google-map'), {
         center: location,
         zoom: 13
     });
@@ -28,7 +28,7 @@ var app = app || {};
             query: interest
         };
 
-        var service = new google.maps.places.PlacesService(map);
+        var service = new google.maps.places.PlacesService(_map);
 
         return new Promise (function (resolve, reject) {
             // service.nearbySearch(request, function (results, status) {
@@ -59,7 +59,7 @@ var app = app || {};
     };
 
     module.getMap = function () {
-        return map;
+        return _map;
     };
 
     module.getFoursquare = function (q, latlng) {
@@ -110,6 +110,17 @@ var app = app || {};
                 var businesses = results.businesses;
                 resolve(businesses);
             });
+        });
+    };
+
+    module.init = function () {
+        // google.maps.event.addListener(_map, 'bounds_changed', function() {
+        //     var bounds = _map.getBounds();
+        //     console.log('bounds changed', bounds);
+        // });
+
+        return new Promise (function (resolve, reject) {
+            app.models.fetchData().then(resolve);
         });
     };
 
