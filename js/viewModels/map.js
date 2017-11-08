@@ -161,8 +161,15 @@ var app = app || {};
             return googleMap;
         };
 
-        this.redraw = function () {
+        this.redraw = function (places) {
             google.maps.event.trigger(googleMap, 'resize');
+            if (places !== undefined) {
+                var bounds = new google.maps.LatLngBounds();
+                places.forEach(function (p) {
+                    bounds.extend(p.marker.getPosition());
+                });
+                googleMap.fitBounds(bounds);
+            }
         };
     };
 })(google, app.models, app.utils);

@@ -3,11 +3,18 @@
     /*margin: auto;*/
     color: gray;
     /*justify-content: flex-start;*/
+    /*max-height: 480px;*/
 }
+
+.section-map {
+    height: 100%;
+}
+
 
 #google-map {
     position: relative;
     width: 100%;
+    height: 100%;
     padding-bottom: 100%; /* Ex. if ratio 16:9 ( 100%/16*9 = 56.25% ) */
 }
 #google-map > *{

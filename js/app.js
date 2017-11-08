@@ -12,13 +12,6 @@ app.MainViewModel = function (data) {
     this.map = new app.viewModels.Map();
     this.activePlace = ko.observable(null);
 
-
-    var effects = {
-        markers: []
-    };
-
-
-
     function doFiltering (text) {
         self.places.forEach(function (place) {
             if (text === "" || place.name.toLowerCase().includes(text.toLowerCase())) {
@@ -64,10 +57,16 @@ app.MainViewModel = function (data) {
             }
         });
 
-        // wire menu visibility, which affects layout, to google map layout
-        $('#search-area').on('hidden.bs.collapse', self.map.redraw);
+        // wire menu visibility, which affects layout, to google map resize event
+        // since google map does not redraw automatically on programmatic DOM changes
+        $('#search-area').on('hidden.bs.collapse shown.bs.collapse', function (event) {
+            self.map.redraw(self.places);
+        });
 
-        effects.markers = markers;
+        // force map redraw to accomodate place column size
+        setTimeout(function () {
+            self.map.redraw(self.places);
+        }, 0);
     };
 
     this.setActivePlace = function (place, event) {

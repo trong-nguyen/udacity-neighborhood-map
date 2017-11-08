@@ -30,21 +30,27 @@
                 <section id="section-search" data-bind="with: searchForm" class="m-md-2 m-sm-1">
                     <form autocomplete="off" class="">
                         <label>
-                            <input
-                                type="search"
-                                name="search-area"
-                                value=""
-                                placeholder="Search within..."
-                                data-bind="textInput: text"
-                                id="search-field"
-                                class="form-control mb-2 mr-sm-2 mb-sm-0"
-                                aria-label="Search"
-                                >
-                            <button
-                                type="button"
-                                class="btn btn-primary my-2 my-sm-0"
-                                >Filter
-                            </button>
+                            <div class="form-row">
+                                <div class="col-sm-9">
+                                    <input
+                                        type="search"
+                                        name="search-area"
+                                        value=""
+                                        placeholder="Search within..."
+                                        data-bind="textInput: text"
+                                        id="search-field"
+                                        class="form-control"
+                                        aria-label="Search"
+                                        >
+                                </div>
+                                <div class="col-sm-3">
+                                    <button
+                                        type="button"
+                                        class="btn btn-primary my-2 my-sm-0"
+                                        >Filter
+                                    </button>
+                                </div>
+                            </div>
                         </label>
                     </form>
                 </section>
@@ -58,8 +64,8 @@
                 </section>
             </div>
 
-            <div class="col-sm-12 col-md">
-                <div id="section-map" class="m-2">
+            <div class="col-sm-12 col-md p-md-0">
+                <div class="section-map">
                     <div id="google-map"></div>
                 </div>
             </div>
