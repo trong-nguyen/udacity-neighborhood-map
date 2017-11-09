@@ -74,6 +74,12 @@ app.MainViewModel = function (data) {
             self.activePlace(place);
         }
     };
+
+
+    // doing the active thing
+    this.isActive = function (place) {
+        return place == self.activePlace();
+    };
 };
 
 function main () {

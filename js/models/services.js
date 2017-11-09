@@ -114,11 +114,6 @@ var app = app || {};
     };
 
     module.init = function () {
-        // google.maps.event.addListener(_map, 'bounds_changed', function() {
-        //     var bounds = _map.getBounds();
-        //     console.log('bounds changed', bounds);
-        // });
-
         return new Promise (function (resolve, reject) {
             app.models.fetchData().then(resolve);
         });

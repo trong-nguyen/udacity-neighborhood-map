@@ -1,52 +1,51 @@
-<div class="info-window">
+<div class="card info-window info-window-card border-0">
+    <img class="card-image-top d-none d-md-block" src="<%= photo %>" alt="Place photo">
+    <div class="card-body">
+        <h4 class="card-title">
+            <%= name %>
+        </h4>
+        <p class="card-text">
+            Great for: <%= description %>
+        </p>
 
-<section id="googlemap-section">
-    <h3><%= name %></h3>
-    <address><%= address %></address>
-    <div><%= description %></div>
-    <div class="info-window-photo">
-        <img src="<%= photo %>" alt="Photo">
-    </div>
-</section>
+        <!-- YELP section -->
+        <p class="card-text">
+            <span>
+            <a href="<%= yelp.url %>" target="blank">
+                <img src="http://valleygoldmine.com/template/VGM/images/icon-yelp.png" alt="Yelp Icon" class="info-window-icon">
+            </a>
+        </span>
+        Rating: <span class="text-primary"><%= yelp.rating %></span> (<span class="text-primary"><%= yelp.review_count %></span> reviews)
+        </p>
 
-<section id="yelp-section">
-    <span>
-        <a href="<%= yelp.url %>" target="blank">
-            <img src="http://valleygoldmine.com/template/VGM/images/icon-yelp.png" alt="Yelp Icon" class="info-window-icon">
-        </a>
-    </span>
-    Rating: <%= yelp.rating %> (<%= yelp.review_count %> reviews)
-</section>
-
-<section id="foursquare-section">
-    <div class="foursquare-stats">
-        <span>
+        <!-- Foursquare section -->
+        <p class="card-text">
+            <span>
             <a href="<%= foursquare.url %>" target="blank">
                 <img src="http://icons.iconarchive.com/icons/tinylab/android-lollipop-apps/128/Foursquare-icon.png" alt="Foursquare Icon" class="info-window-icon">
             </a>
-        </span>
-        <% if (foursquare.stats) { %>
-          <%= foursquare.stats.checkinsCount %> checkins,  <%= foursquare.stats.usersCount %> users, <%= foursquare.stats.tipCount %> tips
-        <% } %>
+            </span>
+            <% if (foursquare.stats) { %>
+              <span class="text-primary"><%= foursquare.stats.checkinsCount %></span> checkins,
+              <span class="text-primary"><%= foursquare.stats.usersCount %></span> users,
+              <span class="text-primary"><%= foursquare.stats.tipCount %></span> tips
+            <% } %>
+        </p>
     </div>
-</section>
 
-<hr>
-
-<section id="twitter-section">
     <% if (tweets.length) { %>
-        <% tweets.forEach(function (tweet) { %>
-            <div class="tweet">
-                <a href="<%= tweet.user.url %>">
-                    <img src="<%= tweet.user.profile_image_url %>" alt="twitter-user" class="twitter-user-icon">
-                </a>
-                <%= tweet.user.name %>: <%= tweet.text %></p>
-            </div>
-        <% }); %>
-        <div class="center">
-            <img src="https://cdn1.iconfinder.com/data/icons/logotypes/32/twitter-128.png" alt="Twitter Icon" class="info-window-icon">
-        </div>
+        <section class="d-none d-md-block">
+            <!-- Twitter section -->
+                <p class="card-text">
+                    <h5 class="text-center">
+                        What people said on <img src="https://cdn1.iconfinder.com/data/icons/logotypes/32/twitter-128.png" alt="Twitter Icon" class="info-window-icon">:
+                    </h5>
+                </p>
+
+                <% tweets.forEach(function (tweet) { %>
+                    <div class="unrendered-tweet" tweet-id="<%= tweet %>"></div>
+                <% }); %>
+        </section>
     <% } %>
-</section>
 
 </div>

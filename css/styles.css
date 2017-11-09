@@ -1,9 +1,5 @@
 .app {
-    /*display: flex;*/
-    /*margin: auto;*/
     color: gray;
-    /*justify-content: flex-start;*/
-    /*max-height: 480px;*/
 }
 
 .section-map {
@@ -42,9 +38,10 @@
 
 }
 
-.info-window {
-    max-height: 300px;
-    max-width: 400px;
+.info-window-card {
+    width: 20rem;
+    max-height: 40rem;
+    overflow-y: scroll;
 }
 
 .info-window-icon {
@@ -58,8 +55,4 @@
 
 .twitter-user-icon {
     height: 25px;
-}
-
-.center {
-    text-align: center;
 }

@@ -19,11 +19,38 @@ var app = app || {};
         */
 
         var _marker = null,
-            infoWindow = new google.maps.InfoWindow({
-                content: '',
-                // disableAutoPan: true
-            }),
-            template = utils.templates['info-window'];
+        infoWindow  = new google.maps.InfoWindow(),
+        template    = utils.templates['info-window']
+        ;
+
+        function renderEmbeddedTweets() {
+            /*
+                @description:
+                    - A self-contained utility to render embedded tweets
+                    using Twitter Dev JS rendering tool.
+                    - It looks for unrendered tweets in a specific format,
+                    render and convert them to rendered format.
+                    - Each unrendered tweet must has the following format
+                    <div class="unrendered-tweet" tweet-id=TWEET_ID></div>
+            */
+            var containerClass = 'info-window';
+            var identifyingClass = 'unrendered-tweet';
+
+            var elms = $(['.' + containerClass, '.' + identifyingClass].join(' '));
+
+            elms.each(function (_, el) {
+                twttr.widgets.createTweet(
+                    el.getAttribute('tweet-id'),
+                    el,
+                    {
+                        cards: 'hidden' //Hide photos, videos, and link previews powered by Cards.
+                    }
+                );
+            });
+
+            // cleanup to prevent re-render
+            elms.removeClass(identifyingClass);
+        }
 
         function loadContent(place) {
             var content = Object.assign({}, place); // copy
@@ -33,6 +60,7 @@ var app = app || {};
                 lat: place.location.lat(),
                 lng: place.location.lng()
             };
+
 
             return new Promise (function (resolve, reject) {
                 Promise.all([
@@ -44,8 +72,8 @@ var app = app || {};
                         // get results from array
 
                         // Yelp
-                        content.yelp = {};
                         var ypData = resultsArray[0];
+                        content.yelp = {};
                         if (ypData.length) {
                             var data = ypData[0];
                             content.yelp = data;
@@ -60,8 +88,8 @@ var app = app || {};
                         }
 
                         // 4square
-                        content.foursquare = {};
                         var fsData = resultsArray[1];
+                        content.foursquare = {};
                         if (fsData.length) {
                             var data = fsData[0];
                             content.foursquare = data;
@@ -75,7 +103,9 @@ var app = app || {};
                         }
 
                         // Twitter
-                        content.tweets = resultsArray[2];
+                        var ttData = resultsArray[2];
+                        content.tweets = ttData.map(function (t) { return t.id_str; });
+
                         console.info(content);
 
                         content.description = utils.uniq(content.description).join(', ');
@@ -97,7 +127,10 @@ var app = app || {};
                     loadContent(place).then(function (content) {
                         var html = template(content);
                         infoWindow.setContent(html);
-                        GX.test = infoWindow;
+
+                        // tweets are not rendered in the templating process
+                        // due to their embedding natures
+                        renderEmbeddedTweets();
                     });
 
                     infoWindow.addListener('closeclick', function () {

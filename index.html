@@ -14,53 +14,60 @@
   </head>
   <body>
     <h1>Neighborhood Explorer</h1>
+    <twitterwidget class="twitter-tweet twitter-tweet-rendered" id="twitter-widget-0" data-tweet-id="928639886349029377" style="position: static; visibility: visible; display: block; transform: rotate(0deg); max-width: 100%; width: 500px; min-width: 220px; margin-top: 10px; margin-bottom: 10px;"></twitterwidget>
 
     <div class="app fluid-container">
         <div id="toggle-button">
             <!-- The button to toggle search field -->
-            <div class="navbar navbar-light d-lg-none">
+            <nav class="navbar navbar-light d-lg-none navbar-expand-lg">
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#search-area" aria-controls="search-area" aria-expanded="true" aria-label="Toggle Search">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-            </div>
+            </nav>
         </div>
         <div class="row">
             <!-- The search field -->
-            <div class="col-sm-12 col-md-4 col-lg-3 collapse navbar-dark bg-dark show" id="search-area">
-                <section id="section-search" data-bind="with: searchForm" class="m-md-2 m-sm-1">
+            <div class="col-sm-12 col-md-4 col-lg-3 collapse show bg-light" id="search-area">
+                <section id="section-search" data-bind="with: searchForm" class="m-2 m-md-3">
                     <form autocomplete="off" class="">
-                        <label>
-                            <div class="form-row">
-                                <div class="col-sm-9">
-                                    <input
-                                        type="search"
-                                        name="search-area"
-                                        value=""
-                                        placeholder="Search within..."
-                                        data-bind="textInput: text"
-                                        id="search-field"
-                                        class="form-control"
-                                        aria-label="Search"
-                                        >
-                                </div>
-                                <div class="col-sm-3">
-                                    <button
-                                        type="button"
-                                        class="btn btn-primary my-2 my-sm-0"
-                                        >Filter
-                                    </button>
-                                </div>
-                            </div>
+                        <label for="search-field">
+                            <h5 class="text-primary">
+                                Search collection:
+                            </h5>
                         </label>
+                        <div class="input-group">
+                            <input
+                                type="search"
+                                name="search-area"
+                                value=""
+                                placeholder="..."
+                                data-bind="textInput: text"
+                                id="search-field"
+                                class="form-control"
+                                aria-label="Search"
+                                >
+
+                            <span class="input-group-btn">
+                                <button
+                                    type="button"
+                                    class="btn btn-primary"
+                                    >Filter
+                                </button>
+                            </span>
+                        </div>
                     </form>
                 </section>
 
-                <section id="section-places" class="m-md-2 m-sm-1">
-                    <div data-bind="foreach: places">
-                        <div class="p-md-1"
-                            data-bind="text: name, click: $parent.setActivePlace, visible: visible">
-                        </div>
-                    </div>
+                <section id="section-places" class="m-2 m-md-3">
+                    <ul data-bind="foreach: { data: places, as: 'place' }" class="list-group">
+                        <li class="list-group-item list-group-item-action" data-bind="click: $parent.setActivePlace, visible: visible, css: { active: $parent.isActive(place) }">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div data-bind="text: name">
+                                </div>
+                                <span class="badge badge-primary badge-pill" data-bind="text: rating"></span>
+                            </div>
+                        </li>
+                    </ul>
                 </section>
             </div>
 
@@ -83,6 +90,8 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+
+    <script type="text/javascript" async defer src="https://platform.twitter.com/widgets.js"></script>
 
     <!-- UnderscoreJS -->
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>

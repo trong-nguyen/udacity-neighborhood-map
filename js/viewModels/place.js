@@ -15,13 +15,14 @@ var app = app || {};
     };
 
     app.viewModels.Place = function (data) {
-        this.name = data.name;
-        this.icon = data.icon;
-        this.placeID = data.place_id;
+        this.name     = data.name;
+        this.icon     = data.icon;
+        this.placeID  = data.place_id;
         this.location = data.geometry.location;
-        this.address = data.formatted_address;
-        this.photo = (data.photos && data.photos.length) ? data.photos[0].getUrl(placePhotoConfigs) : '';
-        this.visible = ko.observable(true);
-        this.marker = null;
+        this.address  = data.formatted_address;
+        this.rating   = data.rating || 'na';
+        this.photo    = (data.photos && data.photos.length) ? data.photos[0].getUrl(placePhotoConfigs) : '';
+        this.visible  = ko.observable(true);
+        this.marker   = null;
     };
 })();
