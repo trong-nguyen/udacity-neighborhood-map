@@ -33,7 +33,7 @@
         <div class="row">
             <!-- The search field -->
             <div class="col-sm-12 col-md-5 col-lg-4 collapse show bg-light" id="search-area">
-                <section id="section-search" data-bind="with: searchForm" class="m-2 m-md-3">
+                <section id="section-search" data-bind="with: getViewModel('search')" class="m-2 m-md-3">
                     <form autocomplete="off" class="">
                         <label for="search-field">
                             <p class="text-primary lead">
@@ -64,7 +64,7 @@
                 </section>
 
                 <section id="section-places" class="m-2 m-md-3">
-                    <ul data-bind="foreach: { data: places, as: 'place' }" class="list-group">
+                    <ul data-bind="foreach: { data: getViewModel('places'), as: 'place' }" class="list-group">
                         <li class="list-group-item list-group-item-action" data-bind="click: $parent.setActivePlace, visible: visible, css: { active: $parent.isActive(place) }">
                             <div class="d-flex justify-content-between align-items-center">
                                 <div data-bind="text: name">
@@ -96,18 +96,18 @@
 
 
     <!-- jQuery first, then its dependency Popper.js, then Bootstrap JS -->
-    <!-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script> -->
-
     <!-- use the full version of jQuery instead of the trimmed -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
 
+    <!-- Twitter Widgets JS -->
     <script type="text/javascript" src="https://platform.twitter.com/widgets.js"></script>
 
     <!-- UnderscoreJS -->
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
 
+    <!-- Google Maps and Places API -->
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBzpVxGO1087J3Hm1hPSqtvsuY6sIlhZq0&libraries=places"></script>
 
     <!-- KnockoutJS -->

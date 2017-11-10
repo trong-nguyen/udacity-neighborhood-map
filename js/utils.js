@@ -8,7 +8,6 @@ var app = app || {};
     app.utils = app.utils || {};
 
 (function (module, _) {
-
     module.loadTemplate = function (file) {
         return new Promise (function (resolve, reject) {
             $.get('templates/' + file + '.html')
@@ -50,5 +49,6 @@ var app = app || {};
     };
 
     module.uniq = _.uniq; //porting underscore unique
-    module.twitter = twttr;
+
+    module.twitter = twttr; // porting Twitter Widgets
 })(app.utils, _);

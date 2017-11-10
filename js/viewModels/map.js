@@ -19,14 +19,14 @@ var app = app || {};
         }, 700);
     }
 
+    /*
+        @description: a view that wraps google.maps.Map
+        and marker, infoWindow manipulations
+    */
     module.Map = function () {
-        /*
-            A map that wraps google.maps.Map
-            and marker, infoWindow manipulations
-        */
 
         var googleMap = services.getMap();
-        var infoWindow = module.infoWindow();
+        var infoWindow = module.createInfoWindow();
 
         this.createMarkers = function (places) {
             return places.map(function (place) {

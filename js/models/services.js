@@ -7,11 +7,15 @@ A collection of methods to retrieve model data
 var app = app || {};
     app.models = app.models || {};
 
-(function (google, $) {
-    var module = app.models;
+(function (module, google, $) {
+    //---CONFIGURATIONS START
 
-    // This is Chicago
-    var location = new google.maps.LatLng(41.8748819,-87.6514046);
+    /*
+    *   This section declares the pre-defined data for the app to run with.
+    *   The purpose of pre-defined / hardcoded data is to narrow the scope of the project
+    *   Make it works as required, extend later!
+    */
+    var location = new google.maps.LatLng(41.8748819,-87.6514046);// This is Chicago
 
     var _map = new google.maps.Map(document.getElementById('google-map'), {
         center: location,
@@ -19,6 +23,8 @@ var app = app || {};
     });
 
     var _data = []; //cached data
+
+    //---CONFIGURATIONS END
 
     /*
     *   @description: generic asynchronous load place data
@@ -187,4 +193,4 @@ var app = app || {};
     };
 
 
-})(google, $);
+})(app.models, google, $);

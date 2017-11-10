@@ -9,15 +9,12 @@ Only one infoWindow is present at a time
 var app = app || {};
     app.viewModels = app.viewModels || {};
 
-(function (google, services, utils) {
-    var module = app.viewModels;
-
-    module.infoWindow = function () {
+(function (module, google, services, utils) {
+    module.createInfoWindow = function () {
         /*
-            A singleton that wraps around google.maps.InfoWindow
+            return a viewModel that wraps around google.maps.InfoWindow
             and the targeted marker and a template to render
         */
-
         var _marker = null,
         infoWindow  = new google.maps.InfoWindow(),
         template    = utils.templates['info-window']
@@ -106,8 +103,6 @@ var app = app || {};
                         var ttData = resultsArray[2];
                         content.tweets = ttData.map(function (t) { return t.id_str; });
 
-                        console.info(content);
-
                         content.description = utils.uniq(content.description).join(', ');
 
                         resolve(content);
@@ -138,6 +133,7 @@ var app = app || {};
                             renderEmbeddedTweets();
                         })
                         .catch(function (reason) {
+                            console.error(reason);
                             infoWindow.setContent(
                                 "<h3>Cannot load data. API error!</h3>"
                                 );
@@ -160,4 +156,4 @@ var app = app || {};
             }
         }
     };
-})(google, app.models, app.utils);
+})(app.viewModels, google, app.models, app.utils);
