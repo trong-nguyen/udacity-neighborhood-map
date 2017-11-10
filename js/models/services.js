@@ -157,7 +157,7 @@ var app = app || {};
     *       latlng : location in {lat: latValue, lng: lngValue} format
     */
     module.getYelp = function (q, latlng) {
-        var url = "https://api.trongnn\.com/public/yelp";
+        var url = "https://api.trongn.com/public/yelp";
         var params = $.param({
             term      : q,
             latitude  : latlng.lat,
