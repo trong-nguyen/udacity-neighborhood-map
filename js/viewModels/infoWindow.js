@@ -1,8 +1,8 @@
 'use strict';
 
 /*
-The viewModel for InfoWindow open from within Google Maps
-Handle all the media data queries and present.
+The viewModel for InfoWindow openned from within Google Maps
+Handle all the media data queries and data present on the infoWindow.
 Only one infoWindow is present at a time
 */
 
@@ -111,6 +111,10 @@ var app = app || {};
                         content.description = utils.uniq(content.description).join(', ');
 
                         resolve(content);
+                    })
+                    .catch(function (reason) {
+                        console.log('Failed request data from 3rd-party APIs', reason);
+                        reject(reason);
                     });
             });
         }
@@ -124,14 +128,20 @@ var app = app || {};
                     infoWindow.open(map, marker);
 
                     // asynchronously load content into window
-                    loadContent(place).then(function (content) {
-                        var html = template(content);
-                        infoWindow.setContent(html);
+                    loadContent(place)
+                        .then(function (content) {
+                            var html = template(content);
+                            infoWindow.setContent(html);
 
-                        // tweets are not rendered in the templating process
-                        // due to their embedding natures
-                        renderEmbeddedTweets();
-                    });
+                            // tweets are not rendered in the templating process
+                            // due to their embedding natures
+                            renderEmbeddedTweets();
+                        })
+                        .catch(function (reason) {
+                            infoWindow.setContent(
+                                "<h3>Cannot load data. API error!</h3>"
+                                );
+                        });
 
                     infoWindow.addListener('closeclick', function () {
                         _marker = null;

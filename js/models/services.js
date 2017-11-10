@@ -18,8 +18,16 @@ var app = app || {};
         zoom: 13
     });
 
+    var _data = []; //cached data
+
+    /*
+    *   @description: generic asynchronous load place data
+    *       from Google Places API based on given interest
+    *
+    *   @params:
+    *       - interest: the keyword used to search against places names
+    */
     function getPlaces(interest) {
-        // search for places by these parameters
         var request = {
             location: location,
             radius: 500,
@@ -42,27 +50,57 @@ var app = app || {};
         });
     }
 
-    module.fetchData = function () {
-        return new Promise(function (resolve, reject) {
-            getPlaces('seafood')
-                .then(function (results) {
-                    module.getData = function () {
-                        return results;
-                    };
-                    resolve(results);
-                });
-        });
+    /*
+    *   @description: synchronous get of cached places data
+    */
+    module.getData = function () {
+        return _data;
     };
 
+    /*
+    *   @description: asynchronous loading data with predefined interests
+    *       invoked once when initializing App
+    */
+    module.fetchData = function () {
+
+        if (!_data.length) {
+            return new Promise (function (resolve, reject) {
+                getPlaces('seafood')
+                    .then(function (results) {
+                        _data = results; // caching
+                        resolve(results)
+                    })
+                    .catch(reject);
+            });
+        }
+    };
+
+    // getting pre-defined location
     module.getLocation = function () {
         return location;
     };
 
+    // getting map created from the pre-defined location
     module.getMap = function () {
         return _map;
     };
 
+    /*
+    *   The below functions fetch data asynchronously from different APIs
+    *   proxied through a prebuilt backend, where tracking or Auth details
+    *   were added to make up for lack of proper backend operations avoid
+    *   unecessary exposing secrets.
+    */
+
+    /*
+    *   @description: Asynchronous loading places
+    *       from Foursquare database
+    *   @params:
+    *       q      : query term to search agaisnt names
+    *       latlng : location in {lat: latValue, lng: lngValue} format
+    */
     module.getFoursquare = function (q, latlng) {
+
         var url = "https://api.trongn.com/public/foursquare";
         var version = '20170801';
 
@@ -76,10 +114,21 @@ var app = app || {};
         return new Promise (function (resolve, reject) {
             $.getJSON(url + '?' + params, function (results) {
                 resolve(results.response.venues);
+            })
+            .fail(function (e) {
+                console.log('Error calling Foursquare API', e);
+                reject(e);
             });
         });
     };
 
+    /*
+    *   @description: Asynchronous loading places
+    *       from Twitter database
+    *   @params:
+    *       q      : query term to search agaisnt names
+    *       latlng : location in {lat: latValue, lng: lngValue} format
+    */
     module.getTweets = function (q, latlng) {
         var url = "https://api.trongn.com/public/twitter";
         var params = $.param({
@@ -92,12 +141,23 @@ var app = app || {};
             $.getJSON(url + '?' + params, function (results) {
                 var tweets = results.statuses;
                 resolve(tweets);
+            })
+            .fail(function (e) {
+                console.log('Error calling Twitter API', e);
+                reject(e);
             });
         });
     };
 
+    /*
+    *   @description: Asynchronous loading places
+    *       from Yelp database
+    *   @params:
+    *       q      : query term to search agaisnt names
+    *       latlng : location in {lat: latValue, lng: lngValue} format
+    */
     module.getYelp = function (q, latlng) {
-        var url = "https://api.trongn.com/public/yelp";
+        var url = "https://api.trongnn\.com/public/yelp";
         var params = $.param({
             term      : q,
             latitude  : latlng.lat,
@@ -109,13 +169,20 @@ var app = app || {};
             $.getJSON(url + '?' + params, function (results) {
                 var businesses = results.businesses;
                 resolve(businesses);
+            })
+            .fail(function (e) {
+                console.log('Error calling Yelp API', e);
+                reject(e);
             });
         });
     };
 
     module.init = function () {
         return new Promise (function (resolve, reject) {
-            app.models.fetchData().then(resolve);
+            app.models.fetchData()
+                .then(resolve)
+                .catch(reject)
+                ;
         });
     };
 
