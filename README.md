@@ -19,3 +19,4 @@ Third party APIs used:
 - [Yelp API](https://www.yelp.com/developers)
 - [Foursquare API](https://developer.foursquare.com)
 - [Twitter API](https://developer.twitter.com/en.html)
+- [Wikipedia Search Place Icon](https://wikipedia.com)
