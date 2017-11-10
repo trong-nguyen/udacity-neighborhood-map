@@ -9,7 +9,7 @@ Only expose app-related methods
 var app = app || {};
     app.viewModels = app.viewModels || {};
 
-(function (google, services, utils) {
+(function (google, services) {
     var module = app.viewModels;
 
     module.animateMarker = function (marker) {
@@ -66,4 +66,4 @@ var app = app || {};
             }
         };
     };
-})(google, app.models, app.utils);
+})(google, app.models);

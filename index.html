@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Neighborhood Explorer</title>
+    <title>XploreIt</title>
 
     <!-- Required meta tags -->
     <meta charset="utf-8">
@@ -13,10 +13,15 @@
     <link rel="stylesheet" type="text/css" href="css/styles.css">
   </head>
   <body>
-    <h1>Neighborhood Explorer</h1>
-    <twitterwidget class="twitter-tweet twitter-tweet-rendered" id="twitter-widget-0" data-tweet-id="928639886349029377" style="position: static; visibility: visible; display: block; transform: rotate(0deg); max-width: 100%; width: 500px; min-width: 220px; margin-top: 10px; margin-bottom: 10px;"></twitterwidget>
 
     <div class="app fluid-container">
+        <div class="title text-center">
+            <div class="app-heading display-3">
+                Xplore-It
+            </div>
+
+            <img class="app-icon" src="https://upload.wikimedia.org/wikipedia/commons/3/39/Simpleicons_Places_map-with-placeholder.svg" alt="">
+        </div>
         <div id="toggle-button">
             <!-- The button to toggle search field -->
             <nav class="navbar navbar-light d-lg-none navbar-expand-lg">
@@ -31,9 +36,9 @@
                 <section id="section-search" data-bind="with: searchForm" class="m-2 m-md-3">
                     <form autocomplete="off" class="">
                         <label for="search-field">
-                            <h5 class="text-primary">
+                            <p class="text-primary lead">
                                 Search collection:
-                            </h5>
+                            </p>
                         </label>
                         <div class="input-group">
                             <input
@@ -72,7 +77,7 @@
             </div>
 
             <div class="col-sm-12 col-md p-md-0">
-                <div class="section-map">
+                <div id="section-map">
                     <div id="google-map"></div>
                 </div>
             </div>
@@ -91,7 +96,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
 
-    <script type="text/javascript" async defer src="https://platform.twitter.com/widgets.js"></script>
+    <script type="text/javascript" src="https://platform.twitter.com/widgets.js"></script>
 
     <!-- UnderscoreJS -->
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>

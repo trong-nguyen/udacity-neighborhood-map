@@ -50,4 +50,5 @@ var app = app || {};
     };
 
     module.uniq = _.uniq; //porting underscore unique
+    module.twitter = twttr;
 })(app.utils, _);
