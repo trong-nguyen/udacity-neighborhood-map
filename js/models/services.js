@@ -8,12 +8,12 @@ var app = app || {};
     app.models = app.models || {};
 
 (function (module, google, $) {
-    //---CONFIGURATIONS START
+    //  CONFIGURATIONS START ----------
 
     /*
     *   This section declares the pre-defined data for the app to run with.
     *   The purpose of pre-defined / hardcoded data is to narrow the scope of the project
-    *   Make it works as required, extend later!
+    *   Make it work as required, extend later!
     */
     var location = new google.maps.LatLng(41.8748819,-87.6514046);// This is Chicago
 
@@ -24,7 +24,11 @@ var app = app || {};
 
     var _data = []; //cached data
 
-    //---CONFIGURATIONS END
+    // check it out at https://developers.google.com/places/supported_types
+    var TYPES_OF_PLACES = ['food'];
+    var PLACE_SEARCH_TERM = 'seafood';
+
+    //  CONFIGURATIONS END----------
 
     /*
     *   @description: generic asynchronous load place data
@@ -37,7 +41,7 @@ var app = app || {};
         var request = {
             location: location,
             radius: 500,
-            types: ['food'],
+            types: TYPES_OF_PLACES,
             keyword: interest,
             query: interest
         };
@@ -71,7 +75,7 @@ var app = app || {};
 
         if (!_data.length) {
             return new Promise (function (resolve, reject) {
-                getPlaces('seafood')
+                getPlaces(PLACE_SEARCH_TERM)
                     .then(function (results) {
                         _data = results; // caching
                         resolve(results)

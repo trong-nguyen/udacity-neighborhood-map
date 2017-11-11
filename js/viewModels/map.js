@@ -65,5 +65,9 @@ var app = app || {};
                 googleMap.fitBounds(bounds);
             }
         };
+
+        this.setCenter = function (location) {
+            googleMap.setCenter(location);
+        };
     };
 })(google, app.models);

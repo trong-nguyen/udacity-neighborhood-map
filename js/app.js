@@ -45,9 +45,13 @@ app.createMainViewModel = function (data) {
         });
     }
 
+    /*
+    *   @description: update the currently selected (clicked) place
+    */
     function setActivePlace (place) {
         if (activePlace() !== place) {
             activePlace(place);
+            map.setCenter(place.location); // center map at the active place
         }
     };
 
