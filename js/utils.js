@@ -4,10 +4,15 @@
 A collection of utility methods, template loading, etc.
 */
 
+// TODOS:
+// MOVE TEMPLATES OUT OF SERVICE INIT, ITS NOT INIT, ITS A MEMBER METHOD, NOT MODULE, MODULE SHOULD BY ALL THE WAY SYNCHRONOUS
+// SIMILARLY MOVE FETCHDATA OUT OF MODEL INIT, SUCH AS LOAD_PREDEFINED DATA
+
 define(function (require) {
     var _ = require('underscore');
 
     var templates = {};
+    var templateNames = ['info-window'];
 
     function loadTemplate (file) {
         return new Promise (function (resolve, reject) {
@@ -19,38 +24,28 @@ define(function (require) {
                 .fail(function (why) {
                     console.error('Cannot get template', file);
                     reject(why);
-                })
-                ;
+                });
         });
     }
 
     function loadTemplateCollection () {
         // load all templates asynchronously for app rendering
-        var loadingTemplates = ['info-window'];
         var loaded = Promise.all(templates.map(loadTemplate));
 
         return new Promise (function (resolve, reject) {
             loaded.then(function (compiledTemplates) {
-                loadingTemplates.forEach(function (name, i) {
+                templateNames.forEach(function (name, i) {
                     templates[name] = compiledTemplates[i];
                 });
-                resolve();
-            });
+                resolve(templates);
+            })
+            .catch(reject);
         });
     }
 
     return {
         templates: templates,
 
-        init: function () {
-            return new Promise (function (resolve, reject) {
-                Promise.all([
-                    // insert all async loading here
-                    loadTemplateCollection()
-                    ]).then(resolve);
-            });
-        },
-
-        uniq: _.uniq, //porting underscore unique
+        init: loadTemplateCollection,
     };
 });

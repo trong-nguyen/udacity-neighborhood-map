@@ -4,6 +4,20 @@ function errorLoadingLibrary(lib) {
     console.error('Error loading library', lib, ', try again later!');
 }
 
+requirejs.config({
+    baseUrl: 'js',
+
+    paths: {
+        jquery     : 'https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min',
+        popper     : 'https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min',
+        bootstrap  : 'https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min',
+        twitter    : 'https://platform.twitter.com/widgets',
+        underscore : 'https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min',
+        knockout   : 'https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.2/knockout-min',
+        google     : 'https://maps.googleapis.com/maps/api/js?key=AIzaSyBzpVxGO1087J3Hm1hPSqtvsuY6sIlhZq0&libraries=places'
+    }
+});
+
 
 /*
 *   @description: the parent viewModel that manages other component viewModels
@@ -11,16 +25,20 @@ function errorLoadingLibrary(lib) {
 *       since by design only one mainViewModel is required for an app.
 */
 define(function (require) {
+    window.popper = require('popper');
+    require('bootstrap');
+
     var ko              = require('knockout'),
         _               = require('underscore'),
         $               = require('jquery'),
 
-        SearchViewModel = require('app/viewModels/search'),
-        mapModule       = require('app/viewModels/map'),
-        PlaceViewModel  = require('app/viewModels/place'),
-        ;
+        SearchViewModel = require('viewModels/search'),
+        mapModule       = require('viewModels/map'),
+        PlaceViewModel  = require('viewModels/place')
+        utils           = require('utils'),
+        services        = require('models/services');
 
-    return function (data) {
+    function controller (data) {
         // child viewModels and class variables declaration
         var map             = new mapModule.Map();
         var places          = null;
@@ -142,4 +160,20 @@ define(function (require) {
             },
         };
     };
+
+    var loaded = Promise.all([
+        utils.init(),
+        services.init(),
+        ]);
+
+    // then instantiate viewModels, functional wiring and Knockout binding
+    loaded.then(function (results) {
+        var data = services.getData()
+        var viewModel = controller(data);
+        viewModel.wireViews();
+        ko.applyBindings(viewModel);
+    }).catch(function (error) {
+        console.error('Failed app initialization:', error);
+        alert('App initialization failed, refresh or try again later!')
+    });
 });

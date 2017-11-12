@@ -9,8 +9,8 @@ Only expose app-related methods
 
 define(function (require) {
     var google = require('google'),
-        services = require('app/models')
-        infoWindow = require('app/viewModels/infoWindow');
+        services = require('models/services'),
+        infoWindow = require('viewModels/infoWindow');
 
     return {
         animateMarker: function (marker) {

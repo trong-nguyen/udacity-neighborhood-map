@@ -9,9 +9,10 @@ Only one infoWindow is present at a time
 define(function (require) {
     var google   = require('google'),
         twitter  = require('twitter'),
+        _        = require('underscore'),
 
-        services = require('app/models/services'),
-        utils    = require('app/utils')
+        services = require('models/services'),
+        utils    = require('utils')
         ;
 
 
@@ -102,7 +103,7 @@ define(function (require) {
                     var ttData = resultsArray[2];
                     content.tweets = ttData.map(function (t) { return t.id_str; });
 
-                    content.description = utils.uniq(content.description).join(', ');
+                    content.description = _.uniq(content.description).join(', ');
 
                     resolve(content);
                 })
