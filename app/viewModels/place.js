@@ -5,16 +5,13 @@ The viewModel for place items, storing transformed properties
 and methods of each place of interest.
 */
 
-var app = app || {};
-    app.viewModels = app.viewModels || {};
-
-(function () {
+define(function () {
     var placePhotoConfigs = {
         maxWidth: 300,
         maxHeight: 300
     };
 
-    app.viewModels.Place = function (data) {
+    return function (data) {
         this.name     = data.name;
         this.icon     = data.icon;
         this.placeID  = data.place_id;
@@ -25,4 +22,4 @@ var app = app || {};
         this.visible  = ko.observable(true);
         this.marker   = null;
     };
-})();
+});
