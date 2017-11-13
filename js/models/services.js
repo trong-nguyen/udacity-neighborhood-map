@@ -5,8 +5,9 @@ A collection of methods to retrieve model data
 */
 
 define(function (require) {
-    var google = require('google'),
-        $ = require('jquery');
+    var
+        google = require('google'),
+        $      = require('jquery');
 
     //  CONFIGURATIONS START ----------
 
@@ -186,15 +187,6 @@ define(function (require) {
                     console.log('Error calling Yelp API', e);
                     reject(e);
                 });
-            });
-        },
-
-        init: function () {
-            return new Promise (function (resolve, reject) {
-                app.models.fetchData()
-                    .then(resolve)
-                    .catch(reject)
-                    ;
             });
         },
     };

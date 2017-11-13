@@ -4,7 +4,9 @@
 The viewModel for Search bar, storing the filtering text
 */
 
-define(function (){
+define(function (require){
+    var ko = require('knockout');
+
     return function () {
         this.text = ko.observable('');
 

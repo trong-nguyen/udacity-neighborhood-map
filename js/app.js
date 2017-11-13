@@ -4,17 +4,35 @@ function errorLoadingLibrary(lib) {
     console.error('Error loading library', lib, ', try again later!');
 }
 
-requirejs.config({
+require.config({
     baseUrl: 'js',
 
     paths: {
-        jquery     : 'https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min',
-        popper     : 'https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min',
-        bootstrap  : 'https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min',
-        twitter    : 'https://platform.twitter.com/widgets',
-        underscore : 'https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min',
-        knockout   : 'https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.2/knockout-min',
-        google     : 'https://maps.googleapis.com/maps/api/js?key=AIzaSyBzpVxGO1087J3Hm1hPSqtvsuY6sIlhZq0&libraries=places'
+        // jquery is a named AMD module (jquery), any other name will cause undefined error
+        jquery     : '//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery',
+        popper     : '//cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min',
+        bootstrap  : '//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min',
+        twttr      : '//platform.twitter.com/widgets',
+        underscore : '//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min',
+        knockout   : '//cdnjs.cloudflare.com/ajax/libs/knockout/3.4.2/knockout-min',
+        google     : '//maps.googleapis.com/maps/api/js?key=AIzaSyBzpVxGO1087J3Hm1hPSqtvsuY6sIlhZq0&libraries=places',
+    },
+
+
+    shim: {
+        // bootstrap js will become a jquery plugin once loaded,
+        // so no need to export
+        bootstrap: {
+            deps: ['jquery', 'popper'],
+        },
+
+        google: {
+            exports: 'google'
+        },
+
+        twttr: {
+            exports: 'twttr'
+        }
     }
 });
 
@@ -24,19 +42,28 @@ requirejs.config({
 *       kind of a controller for viewModels. The mainViewModel is a singleton
 *       since by design only one mainViewModel is required for an app.
 */
-define(function (require) {
-    window.popper = require('popper');
-    require('bootstrap');
+require([
+    'jquery',
+    'knockout',
+    'underscore',
 
-    var ko              = require('knockout'),
-        _               = require('underscore'),
-        $               = require('jquery'),
+    'viewModels/search',
+    'viewModels/map',
+    'viewModels/place',
+    'utils',
+    'models/services',
+    ],
+function (
+    $,
+    ko,
+    _,
 
-        SearchViewModel = require('viewModels/search'),
-        mapModule       = require('viewModels/map'),
-        PlaceViewModel  = require('viewModels/place')
-        utils           = require('utils'),
-        services        = require('models/services');
+    SearchViewModel,
+    mapModule,
+    PlaceViewModel,
+    utils,
+    services
+    ) {
 
     function controller (data) {
         // child viewModels and class variables declaration
@@ -159,11 +186,11 @@ define(function (require) {
                 }
             },
         };
-    };
+    }
 
     var loaded = Promise.all([
         utils.init(),
-        services.init(),
+        services.fetchData(),
         ]);
 
     // then instantiate viewModels, functional wiring and Knockout binding

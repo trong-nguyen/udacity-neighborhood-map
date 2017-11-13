@@ -8,8 +8,9 @@ Only expose app-related methods
 
 
 define(function (require) {
-    var google = require('google'),
-        services = require('models/services'),
+    var
+        google     = require('google'),
+        services   = require('models/services'),
         infoWindow = require('viewModels/infoWindow');
 
     return {

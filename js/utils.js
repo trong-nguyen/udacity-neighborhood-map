@@ -30,7 +30,7 @@ define(function (require) {
 
     function loadTemplateCollection () {
         // load all templates asynchronously for app rendering
-        var loaded = Promise.all(templates.map(loadTemplate));
+        var loaded = Promise.all(templateNames.map(loadTemplate));
 
         return new Promise (function (resolve, reject) {
             loaded.then(function (compiledTemplates) {

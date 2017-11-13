@@ -5,7 +5,9 @@ The viewModel for place items, storing transformed properties
 and methods of each place of interest.
 */
 
-define(function () {
+define(function (require) {
+    var ko = require('knockout');
+
     var placePhotoConfigs = {
         maxWidth: 300,
         maxHeight: 300

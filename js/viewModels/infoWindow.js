@@ -7,18 +7,18 @@ Only one infoWindow is present at a time
 */
 
 define(function (require) {
-    var google   = require('google'),
-        twitter  = require('twitter'),
+    var
+        google   = require('google'),
+        twitter  = require('twttr'),
         _        = require('underscore'),
 
         services = require('models/services'),
-        utils    = require('utils')
-        ;
+        utils    = require('utils');
 
 
-    var _marker = null,
-    infoWindow  = new google.maps.InfoWindow(),
-    template    = utils.templates['info-window'];
+    var
+        _marker    = null,
+        infoWindow = new google.maps.InfoWindow();
 
     function renderEmbeddedTweets() {
         /*
@@ -125,7 +125,8 @@ define(function (require) {
                 // asynchronously load content into window
                 loadContent(place)
                     .then(function (content) {
-                        var html = template(content);
+                        var compiled = utils.templates['info-window'];
+                        var html = compiled(content);
                         infoWindow.setContent(html);
 
                         // tweets are not rendered in the templating process
