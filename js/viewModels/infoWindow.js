@@ -13,13 +13,13 @@ define(function (require) {
         _         = require('underscore'),
 
         services  = require('models/services'),
-        utils     = require('utils');
+        templates = require('utils/templates');
 
 
     var
-        _marker    = null,
-        infoWindow = new google.maps.InfoWindow(),
-        infoWindowTemplate = utils.templates['info-window'];
+        _marker            = null,
+        infoWindow         = new google.maps.InfoWindow(),
+        infoWindowTemplate = templates['info-window'];
 
     function renderEmbeddedTweets() {
         /*

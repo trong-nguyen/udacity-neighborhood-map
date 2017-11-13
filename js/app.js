@@ -37,7 +37,7 @@ require.config({
     }
 });
 
-// walk-around for the quirky Popper issue on initiating Bootstrap JS
+// work-around for the quirky Popper issue on initiating Bootstrap JS
 require(['popper'], function (popper) {
     window.Popper = popper;
     require(['bootstrap']); // let bootstrap init
@@ -57,8 +57,8 @@ require([
     'viewModels/search',
     'viewModels/map',
     'viewModels/place',
-    'utils',
     'models/services',
+    'models/preset',
     ],
 function (
     $,
@@ -66,15 +66,15 @@ function (
     _,
 
     SearchViewModel,
-    mapModule,
+    MapViewModel,
     PlaceViewModel,
-    utils,
-    services
+    services,
+    preset,
     ) {
 
     function controller (data) {
         // child viewModels and class variables declaration
-        var mapViewModel    = new mapModule.Map();
+        var mapViewModel    = new MapViewModel(preset.location, 'google-map');
         var places          = null;
         var activePlace     = ko.observable(null);
         var searchViewModel = new SearchViewModel();
@@ -152,7 +152,7 @@ function (
                 activePlace.subscribe(function (place) {
                     if (place !== null) {
                         mapViewModel.showInfoWindow(place);
-                        mapModule.animateMarker(place.marker);
+                        mapViewModel.animateMarker(place.marker);
                     } else {
                         mapViewModel.hideInfoWindow();
                     }
@@ -195,18 +195,16 @@ function (
         };
     }
 
-    var loaded = Promise.all([
-        services.fetchData(),
-        ]);
-
     // then instantiate viewModels, functional wiring and Knockout binding
-    loaded.then(function (results) {
-        var data = services.getData()
-        var viewModel = controller(data);
-        viewModel.wireViews();
-        ko.applyBindings(viewModel);
-    }).catch(function (error) {
-        console.error('Failed app initialization:', error);
-        alert('App initialization failed, refresh or try again later!')
-    });
+    services
+        .getPlaces(preset.place)
+        .then(function (placesData) {
+            var viewModel = controller(placesData);
+            viewModel.wireViews();
+            ko.applyBindings(viewModel);
+        }).catch(function (error) {
+            console.error('Failed app initialization:', error);
+            alert('App initialization failed, refresh or try again later!')
+        });
+
 });

@@ -11,19 +11,25 @@
         'info-window',
     ];
 
+    var templateFolder = '../../templates';
+
     // formulate template require using requirejs-text plugin
     var templateRequire = templateNames.map(function (tp) {
-        return ['text!../templates/', tp, '.html'].join('')
+        return ['text!', templateFolder, '/', tp, '.html'].join('')
     });
 
-    // real AMD module definition
-    define(templateRequire, function () {
-        var templates = {};
-        var loadedTemplates = arguments; // get ahold of arguments
+    var deps = ['underscore'];
 
-        templateNames.forEach(function (name, index) {
-            templates[name] = loadedTemplates[index];
-        });
+    // real AMD module definition
+    define(deps.concat(templateRequire), function () {
+        var _ = arguments[0];
+
+        var templates = {};
+        for (var i=deps.length; i<arguments.length; ++i) {
+            var name = templateNames[i-deps.length];
+            var loadedTemplate = arguments[i];
+            templates[name] = _.template(loadedTemplate);
+        }
 
         return templates;
     });

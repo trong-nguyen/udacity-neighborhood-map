@@ -9,93 +9,73 @@ define(function (require) {
         google = require('google'),
         $      = require('jquery');
 
-    //  CONFIGURATIONS START ----------
-
-    /*
-    *   This section declares the pre-defined data for the app to run with.
-    *   The purpose of pre-defined / hardcoded data is to narrow the scope of the project
-    *   Make it work as required, extend later!
-    */
-    var location = new google.maps.LatLng(41.8748819,-87.6514046);// This is Chicago
-
-    var _map = new google.maps.Map(document.getElementById('google-map'), {
-        center: location,
-        zoom: 13
-    });
-
-    var _data = []; //cached data
-
-    // check it out at https://developers.google.com/places/supported_types
-    var TYPES_OF_PLACES = ['food'];
-    var PLACE_SEARCH_TERM = 'seafood';
-
-    //  CONFIGURATIONS END----------
-
-    /*
-    *   @description: generic asynchronous load place data
-    *       from Google Places API based on given interest
-    *
-    *   @params:
-    *       - interest: the keyword used to search against places names
-    */
-    function getPlaces(interest) {
-        var request = {
-            location: location,
-            radius: 500,
-            types: TYPES_OF_PLACES,
-            keyword: interest,
-            query: interest
-        };
-
-        var service = new google.maps.places.PlacesService(_map);
-
-        return new Promise (function (resolve, reject) {
-            // service.nearbySearch(request, function (results, status) {
-            service.textSearch(request, function (results, status) {
-                if (status === google.maps.places.PlacesServiceStatus.OK) {
-                    resolve(results);
-                } else {
-                    reject(status);
-                }
-            });
-        });
-    }
-
     return {
 
-        /*
-        *   @description: synchronous get of cached places data
-        */
-        getData: function () {
-            return _data;
-        },
+        // /*
+        // *   @description: synchronous get of cached places data
+        // */
+        // getData: function () {
+        //     return _data;
+        // },
+
+        // /*
+        // *   @description: asynchronous loading data with predefined interests
+        // *       invoked once when initializing App
+        // */
+        // fetchData: function () {
+
+        //     if (!_data.length) {
+        //         return new Promise (function (resolve, reject) {
+        //             getPlaces(PLACE_SEARCH_TERM)
+        //                 .then(function (results) {
+        //                     _data = results; // caching
+        //                     resolve(results)
+        //                 })
+        //                 .catch(reject);
+        //         });
+        //     }
+        // },
+
+        // // getting pre-defined location
+        // getLocation: function () {
+        //     return location;
+        // },
+
+        // // getting map created from the pre-defined location
+        // getMap: function () {
+        //     return _map;
+        // },
+
+
 
         /*
-        *   @description: asynchronous loading data with predefined interests
-        *       invoked once when initializing App
+        *   @description: generic asynchronous load place data
+        *       from Google Places API based on given interest
+        *
+        *   @params:
+        *       - request: the object that contains request details
+        *       ex:
+        *       {
+        *          location : { lat: 41.8748819, lng: -87.6514046 },
+        *          types    : ['food'],
+        *          keyword  : 'seafood',
+        *          query    : 'seafood',
+        *          radius   : 500
+        *       };
         */
-        fetchData: function () {
+        getPlaces: function(request) {
+            var service = new google.maps.places.PlacesService($('<div>').get(0));
 
-            if (!_data.length) {
-                return new Promise (function (resolve, reject) {
-                    getPlaces(PLACE_SEARCH_TERM)
-                        .then(function (results) {
-                            _data = results; // caching
-                            resolve(results)
-                        })
-                        .catch(reject);
+            return new Promise (function (resolve, reject) {
+                // service.nearbySearch(request, function (results, status) {
+                service.textSearch(request, function (results, status) {
+                    if (status === google.maps.places.PlacesServiceStatus.OK) {
+                        resolve(results);
+                    } else {
+                        reject(status);
+                    }
                 });
-            }
-        },
-
-        // getting pre-defined location
-        getLocation: function () {
-            return location;
-        },
-
-        // getting map created from the pre-defined location
-        getMap: function () {
-            return _map;
+            });
         },
 
         /*
