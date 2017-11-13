@@ -13,14 +13,15 @@ define(function (require) {
         services   = require('models/services'),
         infoWindow = require('viewModels/infoWindow');
 
-    return {
-        animateMarker: function (marker) {
-            marker.setAnimation(google.maps.Animation.BOUNCE);
-            setTimeout(function () {
-                marker.setAnimation(null);
-            }, 700);
-        },
+    function animateMarker (marker) {
+        marker.setAnimation(google.maps.Animation.BOUNCE);
+        setTimeout(function () {
+            marker.setAnimation(null);
+        }, 700);
+    }
 
+    return {
+        animateMarker: animateMarker,
         /*
             @description: a view that wraps google.maps.Map
             and marker, infoWindow manipulations
@@ -39,7 +40,7 @@ define(function (require) {
 
                     marker.addListener('click', function () {
                         infoWindow.open(googleMap, place, marker);
-                        module.animateMarker(marker);
+                        animateMarker(marker);
                     });
 
                     return marker;

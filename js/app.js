@@ -10,7 +10,7 @@ require.config({
     paths: {
         // jquery is a named AMD module (jquery), any other name will cause undefined error
         jquery     : '//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery',
-        popper     : '//cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min',
+        popper     : '//cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.7/umd/popper.min',
         bootstrap  : '//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min',
         twttr      : '//platform.twitter.com/widgets',
         underscore : '//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min',
@@ -23,7 +23,7 @@ require.config({
         // bootstrap js will become a jquery plugin once loaded,
         // so no need to export
         bootstrap: {
-            deps: ['jquery', 'popper'],
+            deps: ['jquery', 'popper']
         },
 
         google: {
@@ -34,6 +34,12 @@ require.config({
             exports: 'twttr'
         }
     }
+});
+
+// walk-around for the quirky Popper issue on initiating Bootstrap JS
+require(['popper'], function (popper) {
+    window.Popper = popper;
+    require(['bootstrap']); // let bootstrap init
 });
 
 
@@ -67,7 +73,7 @@ function (
 
     function controller (data) {
         // child viewModels and class variables declaration
-        var map             = new mapModule.Map();
+        var mapViewModel    = new mapModule.Map();
         var places          = null;
         var activePlace     = ko.observable(null);
         var searchViewModel = new SearchViewModel();
@@ -109,7 +115,7 @@ function (
         function setActivePlace (place) {
             if (activePlace() !== place) {
                 activePlace(place);
-                map.setCenter(place.location); // center map at the active place
+                mapViewModel.setCenter(place.location); // center map at the active place
             }
         };
 
@@ -124,7 +130,7 @@ function (
                 // wire placeViewModel <--> mapViewModel
                 // wire the visibility of the place on the list
                 // to that of the marker on the map
-                var markers = map.createMarkers(places);
+                var markers = mapViewModel.createMarkers(places);
                 places.forEach(function (place, i) {
                     place.marker = markers[i];
                     place.visible.subscribe(function (isVisible) {
@@ -144,10 +150,10 @@ function (
                 // wire activePlace (and those dependent on it, such as placeViewModel) <--> mapViewModel and infoWindow
                 activePlace.subscribe(function (place) {
                     if (place !== null) {
-                        map.showInfoWindow(place);
+                        mapViewModel.showInfoWindow(place);
                         mapModule.animateMarker(place.marker);
                     } else {
-                        map.hideInfoWindow();
+                        mapViewModel.hideInfoWindow();
                     }
                 });
 
@@ -156,12 +162,12 @@ function (
                 // wire menu visibility, which affects layout, to google map resize event
                 // since google map does not redraw automatically on programmatic DOM changes
                 $('#search-area').on('hidden.bs.collapse shown.bs.collapse', function (event) {
-                    map.redraw(places);
+                    mapViewModel.redraw(places);
                 });
 
                 // force map redraw to accomodate place column size in init phase
                 setTimeout(function () {
-                    map.redraw(places);
+                    mapViewModel.redraw(places);
                 }, 1000);
             },
 
