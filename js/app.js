@@ -72,9 +72,12 @@ require([
         var status = new Status();
         ko.applyBindings(status, document.getElementById('app-status'));
 
+        status.info('Modules loaded. Getting data ...');
+
         services
             .getPlaces(preset.place)
             .then(function (placesData) {
+                status.info('Data loaded. Binding views ...');
                 var viewModel = masterViewModel(placesData);
                 ko.applyBindings(viewModel, document.getElementById('app'));
 
