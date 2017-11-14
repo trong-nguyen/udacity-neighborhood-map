@@ -1,14 +1,23 @@
 'use strict';
 
-function errorLoadingLibrary(lib) {
-    console.error('Error loading library', lib, ', try again later!');
-}
+// error display during require-ing modules
+require.onError = function (error) {
+    var elm = document.getElementById('app-status-message');
+
+    var message =
+        '<h4>Internal Error</h4>' +
+        '<p>Details: ' + String(error) + '</p>';
+
+    elm.innerHTML = message;
+    elm.parentElement.className += ' alert-danger';
+    throw error;
+};
 
 require.config({
     baseUrl: 'js',
 
     paths: {
-        // jquery is a named AMD module (jquery), any other name will cause undefined error
+        // jquery is a named AMD module (jquery), any other name (moduleID) will cause undefined error
         jquery     : '//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery',
         popper     : '//cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.7/umd/popper.min',
         bootstrap  : '//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min',
@@ -44,31 +53,35 @@ require(['popper'], function (popper) {
 });
 
 
-/*
-*   @description: the parent viewModel that manages other component viewModels
-*       kind of a controller for viewModels. The mainViewModel is a singleton
-*       since by design only one mainViewModel is required for an app.
-*/
-
+// main logic
 require([
         'knockout',
         'models/services',
+        'viewModels/status',
         'viewModels/master',
         'models/preset',
     ], function (
         ko,
         services,
+        Status,
         masterViewModel,
         preset
         ) {
+
+        // main status heading
+        var status = new Status();
+        ko.applyBindings(status, document.getElementById('app-status'));
 
         services
             .getPlaces(preset.place)
             .then(function (placesData) {
                 var viewModel = masterViewModel(placesData);
-                ko.applyBindings(viewModel);
+                ko.applyBindings(viewModel, document.getElementById('app'));
+
+                status.success('App sucessfully loaded!')
             }).catch(function (error) {
                 console.error('Failed app initialization:', error);
-                alert('App initialization failed, refresh or try again later!')
+
+                status.error('App initialization failed, refresh or try again later!');
             });
 });

@@ -134,6 +134,7 @@ define(function (require) {
                 switch (vm) {
                     case 'search' : return searchViewModel;
                     case 'places' : return places;
+                    case 'status' : return status;
                     default       : throw 'invalid request of viewModel: ' + vm;
                 }
             },

@@ -13,15 +13,28 @@
     <link rel="stylesheet" type="text/css" href="css/styles.css">
   </head>
   <body>
-
-    <div class="app fluid-container">
-        <div class="title text-center m-3 py-3 border rounded">
-            <div class="app-heading display-3">
-                Xplore-It
-            </div>
-
-            <img class="app-icon" src="https://upload.wikimedia.org/wikipedia/commons/3/39/Simpleicons_Places_map-with-placeholder.svg" alt="">
+    <div class="title text-center m-3 py-3 border rounded">
+        <div class="app-heading display-3">
+            Xplore-It
         </div>
+
+        <img class="app-icon" src="https://upload.wikimedia.org/wikipedia/commons/3/39/Simpleicons_Places_map-with-placeholder.svg" alt="">
+    </div>
+        <div class="alert alert-info alert-dismissible m-3 py-3" id="app-status" role="alert"
+        data-bind="
+            visible: visible,
+            css: {
+                'alert-info'    : is('default'),
+                'alert-success' : is('success'),
+                'alert-danger'  : is('error')
+            }
+        ">
+            <span data-bind="text: message" id="app-status-message">App loading ...</span>
+            <button type="button" class="close" data-dismiss="alert" aria-label="close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    <div class="app fluid-container" id="app">
         <div id="toggle-button">
             <!-- The button to toggle search field -->
             <nav class="navbar navbar-light d-lg-none navbar-expand-lg">
@@ -83,7 +96,6 @@
             </div>
         </div>
     </div>
-
     <div class="text-center mt-5">
       <p class="">By
         <a href="https://www.linkedin.com/in/nguyentrong/">TrongN</a>

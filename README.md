@@ -13,6 +13,7 @@ A single page web app features interesting places around a selected neighborhood
 - Utilities:
     + jQuery 3.2.1
     + Underscore
+    + RequireJS
 
 All Javascript libraries are loaded from content network providers.
 

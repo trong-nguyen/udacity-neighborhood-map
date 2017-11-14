@@ -10,44 +10,6 @@ define(function (require) {
         $      = require('jquery');
 
     return {
-
-        // /*
-        // *   @description: synchronous get of cached places data
-        // */
-        // getData: function () {
-        //     return _data;
-        // },
-
-        // /*
-        // *   @description: asynchronous loading data with predefined interests
-        // *       invoked once when initializing App
-        // */
-        // fetchData: function () {
-
-        //     if (!_data.length) {
-        //         return new Promise (function (resolve, reject) {
-        //             getPlaces(PLACE_SEARCH_TERM)
-        //                 .then(function (results) {
-        //                     _data = results; // caching
-        //                     resolve(results)
-        //                 })
-        //                 .catch(reject);
-        //         });
-        //     }
-        // },
-
-        // // getting pre-defined location
-        // getLocation: function () {
-        //     return location;
-        // },
-
-        // // getting map created from the pre-defined location
-        // getMap: function () {
-        //     return _map;
-        // },
-
-
-
         /*
         *   @description: generic asynchronous load place data
         *       from Google Places API based on given interest
