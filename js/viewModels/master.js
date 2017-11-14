@@ -112,7 +112,7 @@ define(function (require) {
                 activePlace(place);
                 map.setCenter(place.location); // center map at the active place
             }
-        };
+        }
 
 
         // return public methods for calling in data-bind on DOM elms
@@ -139,5 +139,5 @@ define(function (require) {
                 }
             },
         };
-    }
+    };
 });

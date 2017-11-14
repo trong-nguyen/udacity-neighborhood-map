@@ -1,18 +1,5 @@
 'use strict';
 
-// error display during require-ing modules
-require.onError = function (error) {
-    var elm = document.getElementById('app-status-message');
-
-    var message =
-        '<h4>Internal Error</h4>' +
-        '<p>Details: ' + String(error) + '</p>';
-
-    elm.innerHTML = message;
-    elm.parentElement.className += ' alert-danger';
-    throw error;
-};
-
 require.config({
     baseUrl: 'js',
 
@@ -45,6 +32,19 @@ require.config({
         }
     }
 });
+
+// error display during require-ing modules
+require.onError = function (error) {
+    var elm = document.getElementById('app-status-message');
+
+    var message =
+        '<h4>Internal Error</h4>' +
+        '<p>Details: ' + String(error) + '</p>';
+
+    elm.innerHTML = message;
+    elm.parentElement.className += ' alert-danger';
+    throw error;
+};
 
 // work-around for the quirky Popper issue on initiating Bootstrap JS
 require(['popper'], function (popper) {
@@ -81,7 +81,7 @@ require([
                 var viewModel = masterViewModel(placesData);
                 ko.applyBindings(viewModel, document.getElementById('app'));
 
-                status.success('App sucessfully loaded!')
+                status.success('App sucessfully loaded!');
             }).catch(function (error) {
                 console.error('Failed app initialization:', error);
 

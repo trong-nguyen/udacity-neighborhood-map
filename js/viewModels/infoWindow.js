@@ -11,6 +11,7 @@ define(function (require) {
         google    = require('google'),
         twitter   = require('twttr'),
         _         = require('underscore'),
+        $         = require('jquery'),
 
         services  = require('models/services'),
         templates = require('utils/templates');

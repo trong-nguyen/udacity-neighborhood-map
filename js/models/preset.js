@@ -15,5 +15,5 @@ define(function (require) {
             query    : 'seafood',
             radius   : 500,
         }
-    }
+    };
 });

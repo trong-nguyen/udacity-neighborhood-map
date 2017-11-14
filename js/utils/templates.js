@@ -15,7 +15,7 @@
 
     // formulate template require using requirejs-text plugin
     var templateRequire = templateNames.map(function (tp) {
-        return ['text!', templateFolder, '/', tp, '.html'].join('')
+        return ['text!', templateFolder, '/', tp, '.html'].join('');
     });
 
     var deps = ['underscore'];
