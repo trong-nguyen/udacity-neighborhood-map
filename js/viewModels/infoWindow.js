@@ -15,108 +15,110 @@ define(function (require) {
         services  = require('models/services'),
         templates = require('utils/templates');
 
+    return function () {
 
-    var
-        _marker            = null,
-        infoWindow         = new google.maps.InfoWindow(),
-        infoWindowTemplate = templates['info-window'];
+        var
+            _marker            = null,
+            infoWindow         = new google.maps.InfoWindow(),
+            infoWindowTemplate = templates['info-window'];
 
-    function renderEmbeddedTweets() {
-        /*
-            @description:
-                - A self-contained utility to render embedded tweets
-                using Twitter Dev JS rendering tool.
-                - It looks for unrendered tweets in a specific format,
-                render and convert them to rendered format.
-                - Each unrendered tweet must has the following format
-                <div class="unrendered-tweet" tweet-id=TWEET_ID></div>
-        */
-        var containerClass = 'info-window';
-        var identifyingClass = 'unrendered-tweet';
+        function renderEmbeddedTweets() {
+            /*
+                @description:
+                    - A self-contained utility to render embedded tweets
+                    using Twitter Dev JS rendering tool.
+                    - It looks for unrendered tweets in a specific format,
+                    render and convert them to rendered format.
+                    - Each unrendered tweet must has the following format
+                    <div class="unrendered-tweet" tweet-id=TWEET_ID></div>
+            */
+            var containerClass = 'info-window';
+            var identifyingClass = 'unrendered-tweet';
 
-        var elms = $(['.' + containerClass, '.' + identifyingClass].join(' '));
+            var elms = $(['.' + containerClass, '.' + identifyingClass].join(' '));
 
-        elms.each(function (_, el) {
-            twitter.widgets.createTweet(
-                el.getAttribute('tweet-id'),
-                el,
-                {
-                    cards: 'hidden' //Hide photos, videos, and link previews powered by Cards.
-                }
-            );
-        });
-
-        // cleanup to prevent re-render
-        elms.removeClass(identifyingClass);
-    }
-
-    function loadContent(place) {
-        var content = Object.assign({}, place); // copy
-        content.description = [];
-
-        var latlng = {
-            lat: place.location.lat(),
-            lng: place.location.lng()
-        };
-
-
-        return new Promise (function (resolve, reject) {
-            Promise.all([
-                    services.getYelp(place.name, latlng),
-                    services.getFoursquare(place.name, latlng),
-                    services.getTweets(place.name, latlng),
-                ])
-                .then(function (resultsArray) {
-                    // get results from array
-
-                    // Yelp
-                    var ypData = resultsArray[0];
-                    content.yelp = {};
-                    if (ypData.length) {
-                        var data = ypData[0];
-                        content.yelp = data;
-
-                        // set photo to Yelp's if not available
-                        content.photo = content.photo || data.image_url;
-
-                        var description = data.categories.map(function (c) {
-                            return c.alias;
-                        });
-                        content.description = content.description.concat(description);
+            elms.each(function (_, el) {
+                twitter.widgets.createTweet(
+                    el.getAttribute('tweet-id'),
+                    el,
+                    {
+                        cards: 'hidden' //Hide photos, videos, and link previews powered by Cards.
                     }
+                );
+            });
 
-                    // 4square
-                    var fsData = resultsArray[1];
-                    content.foursquare = {};
-                    if (fsData.length) {
-                        var data = fsData[0];
-                        content.foursquare = data;
-                        content.foursquare.url = 'https://foursquare.com/v/' + data.id;
+            // cleanup to prevent re-render
+            elms.removeClass(identifyingClass);
+        }
+
+        function loadContent(place) {
+            var content = Object.assign({}, place); // copy
+            content.description = [];
+
+            var latlng = {
+                lat: place.location.lat(),
+                lng: place.location.lng()
+            };
 
 
-                        var description = data.categories.map(function (c) {
-                            return c.name.toLowerCase();
-                        });
-                        content.description = content.description.concat(description);
-                    }
+            return new Promise (function (resolve, reject) {
+                Promise.all([
+                        services.getYelp(place.name, latlng),
+                        services.getFoursquare(place.name, latlng),
+                        services.getTweets(place.name, latlng),
+                    ])
+                    .then(function (resultsArray) {
+                        // get results from array
 
-                    // Twitter
-                    var ttData = resultsArray[2];
-                    content.tweets = ttData.map(function (t) { return t.id_str; });
+                        // Yelp
+                        var ypData = resultsArray[0];
+                        content.yelp = {};
+                        if (ypData.length) {
+                            var data = ypData[0];
+                            content.yelp = data;
 
-                    content.description = _.uniq(content.description).join(', ');
+                            // set photo to Yelp's if not available
+                            content.photo = content.photo || data.image_url;
 
-                    resolve(content);
-                })
-                .catch(function (reason) {
-                    console.log('Failed request data from 3rd-party APIs', reason);
-                    reject(reason);
-                });
-        });
-    }
+                            var description = data.categories.map(function (c) {
+                                return c.alias;
+                            });
+                            content.description = content.description.concat(description);
+                        }
 
-    return {
-        open: function (map, place, marker) {
+                        // 4square
+                        var fsData = resultsArray[1];
+                        content.foursquare = {};
+                        if (fsData.length) {
+                            var data = fsData[0];
+                            content.foursquare = data;
+                            content.foursquare.url = 'https://foursquare.com/v/' + data.id;
+
+
+                            var description = data.categories.map(function (c) {
+                                return c.name.toLowerCase();
+                            });
+                            content.description = content.description.concat(description);
+                        }
+
+                        // Twitter
+                        var ttData = resultsArray[2];
+                        content.tweets = ttData.map(function (t) { return t.id_str; });
+
+                        content.description = _.uniq(content.description).join(', ');
+
+                        resolve(content);
+                    })
+                    .catch(function (reason) {
+                        console.log('Failed request data from 3rd-party APIs', reason);
+                        reject(reason);
+                    });
+            });
+        }
+
+        this.open = function (map, place) {
+            var marker = place.marker || null;
+
             if (marker !== null && _marker !== marker) {
                 infoWindow.setContent('');
 
@@ -144,9 +146,9 @@ define(function (require) {
                     _marker = null;
                 });
             }
-        },
+        };
 
-        close: function () {
+        this.close = function () {
             // The native infoWindow.close() does not disconnect this
             // to a prior opening (e.g. with open(priorMap, priorMarker))
             // hence a change to priorMarker indirectly changes this infoWindow behaviors
@@ -154,6 +156,6 @@ define(function (require) {
             // open(s) which is exactly what we want
             infoWindow.open(null);
             _marker = null;
-        }
+        };
     };
 });

@@ -12,8 +12,7 @@
 define(function (require) {
     var
         google     = require('google'),
-        services   = require('models/services'),
-        infoWindow = require('viewModels/infoWindow');
+        services   = require('models/services');
 
     return function (location, elementID) {
 
@@ -25,25 +24,14 @@ define(function (require) {
         this.createMarkers = function (places) {
             return places.map(function (place) {
                 var marker = new google.maps.Marker({
-                    position: place.location,
-                    map: googleMap,
-                    title: place.name
-                });
-
-                marker.addListener('click', function () {
-                    infoWindow.open(googleMap, place, marker);
-                    animateMarker(marker);
+                    position : place.location,
+                    map      : googleMap,
+                    title    : place.name
                 });
 
                 return marker;
             });
         };
-
-        this.showInfoWindow = function (place) {
-            infoWindow.open(googleMap, place, place.marker);
-        };
-
-        this.hideInfoWindow = infoWindow.close;
 
         this.getMap = function () {
             return googleMap;
