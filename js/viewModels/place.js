@@ -1,3 +1,4 @@
+(function () {
 'use strict';
 
 /*
@@ -25,3 +26,4 @@ define(function (require) {
         this.marker   = null;
     };
 });
+})();

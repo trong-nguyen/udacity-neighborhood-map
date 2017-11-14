@@ -1,4 +1,5 @@
-'user strict';
+(function () {
+'use strict';
 
 define(function(require) {
     var ko = require('knockout');
@@ -39,3 +40,4 @@ define(function(require) {
         this.log = self.info;
     };
 });
+})();

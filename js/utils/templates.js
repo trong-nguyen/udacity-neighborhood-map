@@ -1,3 +1,4 @@
+(function () {
 'use strict';
 
 /*
@@ -5,32 +6,31 @@
 *       Basically I want to build a module that pre-loaded templates
 *       and return the named template on calling .get(name)
 */
-(function () {
-    // list all templates to be exported
-    var templateNames = [
-        'info-window',
-    ];
+// list all templates to be exported
+var templateNames = [
+    'info-window',
+];
 
-    var templateFolder = '../../templates';
+var templateFolder = '../../templates';
 
-    // formulate template require using requirejs-text plugin
-    var templateRequire = templateNames.map(function (tp) {
-        return ['text!', templateFolder, '/', tp, '.html'].join('');
-    });
+// formulate template require using requirejs-text plugin
+var templateRequire = templateNames.map(function (tp) {
+    return ['text!', templateFolder, '/', tp, '.html'].join('');
+});
 
-    var deps = ['underscore'];
+var deps = ['underscore'];
 
-    // real AMD module definition
-    define(deps.concat(templateRequire), function () {
-        var _ = arguments[0];
+// real AMD module definition
+define(deps.concat(templateRequire), function () {
+    var _ = arguments[0];
 
-        var templates = {};
-        for (var i=deps.length; i<arguments.length; ++i) {
-            var name = templateNames[i-deps.length];
-            var loadedTemplate = arguments[i];
-            templates[name] = _.template(loadedTemplate);
-        }
+    var templates = {};
+    for (var i=deps.length; i<arguments.length; ++i) {
+        var name = templateNames[i-deps.length];
+        var loadedTemplate = arguments[i];
+        templates[name] = _.template(loadedTemplate);
+    }
 
-        return templates;
-    });
+    return templates;
+});
 })();

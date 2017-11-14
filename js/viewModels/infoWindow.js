@@ -1,3 +1,4 @@
+(function () {
 'use strict';
 
 /*
@@ -75,31 +76,31 @@ define(function (require) {
                         var ypData = resultsArray[0];
                         content.yelp = {};
                         if (ypData.length) {
-                            var data = ypData[0];
-                            content.yelp = data;
+                            var ypItem = ypData[0];
+                            content.yelp = ypItem;
 
                             // set photo to Yelp's if not available
-                            content.photo = content.photo || data.image_url;
+                            content.photo = content.photo || ypItem.image_url;
 
-                            var description = data.categories.map(function (c) {
+                            var ypDescription = ypItem.categories.map(function (c) {
                                 return c.alias;
                             });
-                            content.description = content.description.concat(description);
+                            content.description = content.description.concat(ypDescription);
                         }
 
                         // 4square
                         var fsData = resultsArray[1];
                         content.foursquare = {};
                         if (fsData.length) {
-                            var data = fsData[0];
-                            content.foursquare = data;
-                            content.foursquare.url = 'https://foursquare.com/v/' + data.id;
+                            var fsItem = fsData[0];
+                            content.foursquare = fsItem;
+                            content.foursquare.url = 'https://foursquare.com/v/' + fsItem.id;
 
 
-                            var description = data.categories.map(function (c) {
+                            var fsDescription = fsItem.categories.map(function (c) {
                                 return c.name.toLowerCase();
                             });
-                            content.description = content.description.concat(description);
+                            content.description = content.description.concat(fsDescription);
                         }
 
                         // Twitter
@@ -160,3 +161,4 @@ define(function (require) {
         };
     };
 });
+})();

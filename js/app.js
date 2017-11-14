@@ -1,3 +1,4 @@
+(function () {
 'use strict';
 
 require.config({
@@ -88,3 +89,4 @@ require([
                 status.error('App initialization failed, refresh or try again later!');
             });
 });
+})();

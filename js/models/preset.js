@@ -1,3 +1,4 @@
+(function () {
 'use strict';
 
 /*
@@ -17,3 +18,4 @@ define(function (require) {
         }
     };
 });
+})();

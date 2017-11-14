@@ -1,4 +1,5 @@
-'user strict';
+(function () {
+'use strict';
 
 /*
 *   @descriptions: a master, singleton viewModel that takes
@@ -141,3 +142,4 @@ define(function (require) {
         };
     };
 });
+})();
