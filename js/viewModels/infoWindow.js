@@ -9,13 +9,13 @@ Only one infoWindow is present at a time
 
 define(function (require) {
     var
-        google    = require('google'),
         twitter   = require('twttr'),
         _         = require('underscore'),
         $         = require('jquery'),
 
         services  = require('models/services'),
-        templates = require('utils/templates');
+        templates = require('utils/templates'),
+        google    = require('utils/gmap');
 
     return function () {
 

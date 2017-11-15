@@ -12,8 +12,8 @@ require.config({
         twttr      : '//platform.twitter.com/widgets',
         underscore : '//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min',
         knockout   : '//cdnjs.cloudflare.com/ajax/libs/knockout/3.4.2/knockout-min',
-        google     : '//maps.googleapis.com/maps/api/js?key=AIzaSyBzpVxGO1087J3Hm1hPSqtvsuY6sIlhZq0&libraries=places',
         text       : '//cdnjs.cloudflare.com/ajax/libs/require-text/2.0.12/text.min', // plugin
+        async      : '//cdnjs.cloudflare.com/ajax/libs/requirejs-plugins/1.0.3/async.min',
     },
 
 
@@ -24,10 +24,6 @@ require.config({
             deps: ['jquery', 'popper']
         },
 
-        google: {
-            exports: 'google'
-        },
-
         twttr: {
             exports: 'twttr'
         }
@@ -36,11 +32,20 @@ require.config({
 
 // error display during require-ing modules
 require.onError = function (error) {
+    function errorOnLoadingGoogleMaps(e) {
+        return error.requireType === 'timeout' &&
+            error.requireModules[0].indexOf('maps.googleapis.com') !== -1;
+    }
+
     var elm = document.getElementById('app-status-message');
 
-    var message =
-        '<h4>Internal Error</h4>' +
-        '<p>Details: ' + String(error) + '</p>';
+    var message = '<h4>Internal Error</h4>';
+    if (errorOnLoadingGoogleMaps(error)) {
+        // specifically alert that errors come from loading Google Maps
+        message += '<p>Details: cannnot load Google Map API</p>';
+    } else {
+        message += '<p>Details: ' + String(error) + '</p>';
+    }
 
     elm.innerHTML = message;
     elm.parentElement.className += ' alert-danger';

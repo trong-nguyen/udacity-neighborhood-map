@@ -12,7 +12,7 @@
 
 define(function (require) {
     var
-        google     = require('google'),
+        google     = require('utils/gmap'),
         services   = require('models/services');
 
     return function (location, elementID) {

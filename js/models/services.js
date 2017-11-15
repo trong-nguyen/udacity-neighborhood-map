@@ -7,8 +7,8 @@ A collection of methods to retrieve model data
 
 define(function (require) {
     var
-        google = require('google'),
-        $      = require('jquery');
+        gmap = require('utils/gmap'),
+        $    = require('jquery');
 
     return {
         /*
@@ -27,12 +27,12 @@ define(function (require) {
         *       };
         */
         getPlaces: function(request) {
-            var service = new google.maps.places.PlacesService($('<div>').get(0));
+            var service = new gmap.maps.places.PlacesService($('<div>').get(0));
 
             return new Promise (function (resolve, reject) {
                 // service.nearbySearch(request, function (results, status) {
                 service.textSearch(request, function (results, status) {
-                    if (status === google.maps.places.PlacesServiceStatus.OK) {
+                    if (status === gmap.maps.places.PlacesServiceStatus.OK) {
                         resolve(results);
                     } else {
                         reject(status);
