@@ -22,7 +22,7 @@ var deps = ['underscore'];
 
 // real AMD module definition
 define(deps.concat(templateRequire), function () {
-    var _ = arguments[0];
+    var _ = arguments[deps.indexOf('underscore')];
 
     var templates = {};
     for (var i=deps.length; i<arguments.length; ++i) {
