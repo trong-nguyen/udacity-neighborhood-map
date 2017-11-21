@@ -1,5 +1,6 @@
 # Xplore-It - Neighborhood Explorer App
-A single page web app features interesting places around a selected neighborhood.
+This app represents my essential thinking in designing the front-end side of web apps: minimal (yet meet all design requirements), well-written (code quality), and performant.
+A single page web app features interesting places around a selected neighborhood. The app pull data from multiple resources (Yelp, Foursquare and Twitter) to provide users with an insightful view of the surrounding neighborhood. The app is fully responsive for all display types: mobiles, tablets and monitors. The tech stack includes Knockout.js for MVVM pattern, Bootstrap for UI and Google API for maps and locations. The app is a pleasure to checkout: minimal design, performant and fully functional.
 
 ## Dependencies
 - MVVM pattern by KnockoutJS
